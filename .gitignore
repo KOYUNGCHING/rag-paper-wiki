@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Original papers are local inputs and must not be committed.
+raw/pdfs/
+
+# Generated validation artifacts that are not part of a recorded run.
+tmp/
+

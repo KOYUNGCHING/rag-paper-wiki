@@ -1,0 +1,62 @@
+schema_version: 1
+papers:
+  - id: dpr
+    short_name: DPR
+    title: Dense Passage Retrieval for Open-Domain Question Answering
+    arxiv_id: "2004.04906"
+    landing_page: https://arxiv.org/abs/2004.04906
+    pdf_url: https://arxiv.org/pdf/2004.04906
+    version: null
+    local_pdf: raw/pdfs/dpr.pdf
+    downloaded_at: null
+    sha256: null
+    ingest_status: not_started
+
+  - id: rag
+    short_name: RAG
+    title: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
+    arxiv_id: "2005.11401"
+    landing_page: https://arxiv.org/abs/2005.11401
+    pdf_url: https://arxiv.org/pdf/2005.11401
+    version: null
+    local_pdf: raw/pdfs/rag.pdf
+    downloaded_at: null
+    sha256: null
+    ingest_status: not_started
+
+  - id: fid
+    short_name: FiD
+    title: Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering
+    arxiv_id: "2007.01282"
+    landing_page: https://arxiv.org/abs/2007.01282
+    pdf_url: https://arxiv.org/pdf/2007.01282
+    version: null
+    local_pdf: raw/pdfs/fid.pdf
+    downloaded_at: null
+    sha256: null
+    ingest_status: not_started
+
+  - id: self-rag
+    short_name: Self-RAG
+    title: "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
+    arxiv_id: "2310.11511"
+    landing_page: https://arxiv.org/abs/2310.11511
+    pdf_url: https://arxiv.org/pdf/2310.11511
+    version: null
+    local_pdf: raw/pdfs/self-rag.pdf
+    downloaded_at: null
+    sha256: null
+    ingest_status: not_started
+
+  - id: ragchecker
+    short_name: RAGChecker
+    title: "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation"
+    arxiv_id: "2408.08067"
+    landing_page: https://arxiv.org/abs/2408.08067
+    pdf_url: https://arxiv.org/pdf/2408.08067
+    version: null
+    local_pdf: raw/pdfs/ragchecker.pdf
+    downloaded_at: null
+    sha256: null
+    ingest_status: not_started
+
