@@ -52,6 +52,10 @@ CASES = [
      sub("wiki/concepts/rag.md", "  - self-rag\n", ""), "not listed in verified_sources"),
     ("slide without Wiki mapping", "validate_project.py",
      write("slides-src/outline.md", SLIDES_NO_MAP), "no Wiki source mapping"),
+    ("HTML slide drifts from outline", "validate_project.py",
+     sub("docs/index.html", "<li>DPR:dpr-r02</li>", "<li>DPR:dpr-r03</li>"), "claims not in approved outline"),
+    ("HTML cites unverified Wiki page", "validate_project.py",
+     sub("docs/index.html", "wiki/concepts/embedding.md", "wiki/index.md"), "is not verified"),
 ]
 
 

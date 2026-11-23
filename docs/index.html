@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG 是什麼？讓 LLM 先查資料再回答</title>
+<meta name="description" content="以五篇論文為依據的 RAG 入門互動簡報：DPR、RAG、FiD、Self-RAG、RAGChecker。">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.replace('no-js','js');</script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#deck">跳到簡報內容</a>
+
+<header class="topbar" aria-label="簡報導覽">
+  <span class="brand">RAG 入門</span>
+  <span class="counter" aria-live="polite"><span id="cur">1</span> / <span id="total">14</span></span>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+</header>
+
+<main id="deck" class="deck">
+
+<!-- ============ 1 ============ -->
+<section class="slide title-slide" id="s1" aria-label="第 1 張：標題">
+  <p class="kicker">五篇論文帶你入門</p>
+  <h1>RAG 是什麼？<br>讓 LLM 先查資料再回答</h1>
+  <p class="lead">從論文看 RAG 怎麼<strong>找資料</strong>、<strong>用資料</strong>，以及答錯時怎麼<strong>檢查錯在哪</strong>。</p>
+  <div class="goals">
+    <h2>學完你能</h2>
+    <ol>
+      <li>說出 Retrieve → Augment → Generate 三步驟</li>
+      <li>分辨「沒找到資料」與「找到了卻沒用好」</li>
+      <li>知道 Self-RAG 與 RAGChecker 各自解決什麼問題</li>
+    </ol>
+  </div>
+  <ol class="timeline" aria-label="五篇論文時間線">
+    <li><b>DPR</b><span>2020</span></li>
+    <li><b>RAG</b><span>2020</span></li>
+    <li><b>FiD</b><span>2020</span></li>
+    <li><b>Self-RAG</b><span>2023</span></li>
+    <li><b>RAGChecker</b><span>2024</span></li>
+  </ol>
+  <p class="note">時間線是本 Wiki 的教學整理，不代表後一篇在所有任務上都勝過前一篇。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/comparisons/five-paper-overview.md">五篇總覽</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="slide" id="s2" aria-label="第 2 張：為什麼需要外部知識">
+  <h2>LLM 為什麼需要外部知識？</h2>
+  <div class="two">
+    <div class="card">
+      <h3>只靠模型權重（parametric memory）</h3>
+      <ul>
+        <li>知識藏在權重裡，難以直接修改、檢查，也不會告訴你來源。</li>
+        <li>想把知識都塞進去，就需要很大的模型，訓練與查詢都貴。</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>加上外部文字記憶（non-parametric memory）</h3>
+      <ul>
+        <li>知識放在可讀的文字資料庫，可以檢查、擴充或替換。</li>
+        <li>回答時先去查，再根據查到的內容生成。</li>
+      </ul>
+    </div>
+  </div>
+  <p class="caveat"><b>但是：</b>外部資料本身也可能有錯或有偏見（RAG 論文 Broader Impact）。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAG:rag-c01</li><li>FID:fid-c01</li><li>RAG:rag-c02</li><li>RAG:rag-c13</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/parametric-memory.md">Parametric memory</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/non-parametric-memory.md">Non-parametric memory</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/rag.md">RAG paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/fid.md">FiD paper note</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="slide" id="s3" aria-label="第 3 張：三步驟">
+  <h2>RAG 的三步驟</h2>
+  <svg class="flow" viewBox="0 0 720 170" role="img" aria-labelledby="flow3t">
+    <title id="flow3t">流程圖：問題經過 Retrieve 取得 chunks，Augment 組成 context，Generate 產生答案</title>
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="arrowhead"/></marker></defs>
+    <g class="box"><rect x="10" y="50" width="150" height="70" rx="10"/><text x="85" y="82">Retrieve</text><text x="85" y="104" class="sub">找出 top-k chunks</text></g>
+    <g class="box"><rect x="285" y="50" width="150" height="70" rx="10"/><text x="360" y="82">Augment</text><text x="360" y="104" class="sub">接到問題後面</text></g>
+    <g class="box hl"><rect x="560" y="50" width="150" height="70" rx="10"/><text x="635" y="82">Generate</text><text x="635" y="104" class="sub">根據 context 回答</text></g>
+    <line x1="162" y1="85" x2="280" y2="85" class="edge" marker-end="url(#ar)"/>
+    <line x1="437" y1="85" x2="555" y2="85" class="edge" marker-end="url(#ar)"/>
+  </svg>
+  <svg class="flow-v" viewBox="0 0 260 300" role="img" aria-labelledby="flow3v">
+    <title id="flow3v">流程圖（直式）：Retrieve、Augment、Generate</title>
+    <g class="box"><rect x="30" y="5" width="200" height="64" rx="10"/><text x="130" y="33">Retrieve</text><text x="130" y="55" class="sub">找出 top-k chunks</text></g>
+    <g class="box"><rect x="30" y="118" width="200" height="64" rx="10"/><text x="130" y="146">Augment</text><text x="130" y="168" class="sub">接到問題後面</text></g>
+    <g class="box hl"><rect x="30" y="231" width="200" height="64" rx="10"/><text x="130" y="259">Generate</text><text x="130" y="281" class="sub">根據 context 回答</text></g>
+    <line x1="130" y1="71" x2="130" y2="113" class="edge" marker-end="url(#ar)"/>
+    <line x1="130" y1="184" x2="130" y2="226" class="edge" marker-end="url(#ar)"/>
+  </svg>
+  <ul>
+    <li><b>Retrieve</b>：retriever 從資料庫找出最相關的 k 段文字（chunks）。</li>
+    <li><b>Augment</b>：把 chunks 接在問題後面，變成 generator 的 context。</li>
+    <li><b>Generate</b>：generator 根據問題與 context 寫出答案，不只是擷取原文片段。</li>
+  </ul>
+  <p class="note">原始 RAG 論文是特定架構（DPR retriever + BART generator）；今天說的「RAG」常泛指這種 retrieval + generation 流程（整理）。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAG:rag-c03</li><li>RAG:rag-c07</li><li>RAG:rag-c10</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag.md">RAG concept</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/retriever.md">Retriever</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/generator.md">Generator</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/context-augmentation.md">Context augmentation</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="slide" id="s4" aria-label="第 4 張：DPR">
+  <h2>DPR：怎麼找到相關的 chunks？</h2>
+  <div class="two">
+    <div>
+      <ul>
+        <li><b>BM25</b> 靠關鍵字比對；<b>dense retrieval</b> 把文字變成向量，字面不同但語意相近也能找到。</li>
+        <li>DPR 用兩個 encoder 分別把問題、passage 變成向量，以內積排序；passage 向量事先建好索引。</li>
+        <li><b>Top-k accuracy</b>：前 k 個結果中，至少一個含答案的問題比例。</li>
+      </ul>
+    </div>
+    <figure class="chart">
+      <svg viewBox="0 0 320 210" role="img" aria-labelledby="c4t c4d">
+        <title id="c4t">Top-20 retrieval accuracy：DPR 與 BM25</title>
+        <desc id="c4d">Natural Questions：DPR 78.4，BM25 59.1。SQuAD：DPR 63.2，BM25 68.8。</desc>
+        <line x1="40" y1="170" x2="310" y2="170" class="axis"/>
+        <!-- scale: 100 => 150px -->
+        <rect x="60"  y="52.4" width="40" height="117.6" class="bar dpr"/><text x="80"  y="46" class="val">78.4</text>
+        <rect x="105" y="81.4" width="40" height="88.6"  class="bar bm25"/><text x="125" y="75" class="val">59.1</text>
+        <rect x="190" y="75.2" width="40" height="94.8"  class="bar dpr"/><text x="210" y="69" class="val">63.2</text>
+        <rect x="235" y="66.8" width="40" height="103.2" class="bar bm25"/><text x="255" y="61" class="val">68.8</text>
+        <text x="102" y="190" class="lbl">Natural Questions</text>
+        <text x="232" y="190" class="lbl">SQuAD（例外）</text>
+        <g class="legend"><rect x="60" y="8" width="12" height="12" class="dpr"/><text x="76" y="18">DPR</text><rect x="120" y="8" width="12" height="12" class="bm25"/><text x="136" y="18">BM25</text></g>
+      </svg>
+      <figcaption>重畫自 DPR 論文 Table 2（test set、Single setting、Top-20）。</figcaption>
+    </figure>
+  </div>
+  <p class="caveat">DPR 不是在每個資料集都贏：SQuAD 上 BM25 較高。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>DPR:dpr-c02</li><li>DPR:dpr-c05</li><li>DPR:dpr-c06</li><li>DPR:dpr-c09</li><li>DPR:dpr-r01</li><li>DPR:dpr-r02</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/dpr.md">DPR paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/dense-retrieval.md">Dense retrieval</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/embedding.md">Embedding</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/top-k-evaluation.md">Top-k evaluation</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="slide" id="s5" aria-label="第 5 張：互動 RAG 範例">
+  <h2>互動範例：一次完整的 RAG <span class="tag">虛構範例</span></h2>
+  <div class="stepper" data-stepper>
+    <div class="step-controls" role="group" aria-label="範例步驟">
+      <button type="button" data-step="0" aria-pressed="true">1 Question</button>
+      <button type="button" data-step="1" aria-pressed="false">2 Retrieve</button>
+      <button type="button" data-step="2" aria-pressed="false">3 Augment</button>
+      <button type="button" data-step="3" aria-pressed="false">4 Generate</button>
+    </div>
+    <ol class="steps">
+      <li class="step" data-panel="0">
+        <h3>1 Question</h3>
+        <p class="q">「青嶼市的捷運何時通車？哪一條線最先開？」</p>
+        <p class="small">青嶼市是虛構城市，以下資料全部是教學用假資料。</p>
+      </li>
+      <li class="step" data-panel="1">
+        <h3>2 Retrieve：從 5 個 chunks 取 top-3</h3>
+        <table class="kb">
+          <thead><tr><th>Chunk</th><th>內容</th><th>分數（示意）</th></tr></thead>
+          <tbody>
+            <tr class="hit"><td>K1</td><td>青嶼市捷運於 2015 年通車，首條營運路線為藍線。</td><td>0.91</td></tr>
+            <tr class="hit"><td>K3</td><td>藍線連接青嶼車站與港區，全長 12 公里。</td><td>0.74</td></tr>
+            <tr class="hit"><td>K2</td><td>青嶼市捷運原計畫 2012 年完工，因工程延誤延後通車。</td><td>0.70</td></tr>
+            <tr><td>K4</td><td>綠線於 2019 年加入營運。</td><td>0.41</td></tr>
+            <tr><td>K5</td><td>青嶼市公車路網於 1998 年重整。</td><td>0.22</td></tr>
+          </tbody>
+        </table>
+      </li>
+      <li class="step" data-panel="2">
+        <h3>3 Augment：組成 prompt</h3>
+<pre class="prompt">請根據以下資料回答問題。
+[K1] 青嶼市捷運於 2015 年通車，首條營運路線為藍線。
+[K3] 藍線連接青嶼車站與港區，全長 12 公里。
+[K2] 青嶼市捷運原計畫 2012 年完工，因工程延誤延後通車。
+問題：青嶼市的捷運何時通車？哪一條線最先開？</pre>
+      </li>
+      <li class="step" data-panel="3">
+        <h3>4 Generate：有來源的答案</h3>
+        <p class="answer">青嶼市捷運在 <mark>2015 年</mark>通車<sup>[K1]</sup>，最先營運的是 <mark>藍線</mark><sup>[K1]</sup>。</p>
+        <p class="small">每一句都能回指到 chunk：這就是「讓 LLM 先查資料再回答」。注意 K2 的「2012」是可能誤導的雜訊，下一張會用到。</p>
+      </li>
+    </ol>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <p class="small">虛構資料定義於 Wiki 的 RAG error attribution 頁。</p>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag-error-attribution.md">RAG error attribution（虛構資料）</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/chunk.md">Chunk</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/context-augmentation.md">Context augmentation</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag.md">RAG concept</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="slide" id="s6" aria-label="第 6 張：原始 RAG">
+  <h2>原始 RAG：兩種記憶一起用</h2>
+  <ul>
+    <li>Retriever 由 <b>DPR</b> 初始化，generator 是 <b>BART</b>。</li>
+    <li>微調時更新 query encoder 與 generator，<b>文件索引保持不動</b>。</li>
+    <li>作者主張：換掉外部索引，就能改變模型回答的時效性事實，不必重訓 generator。</li>
+    <li><b>RAG-Sequence</b> 整段答案用同一份文件；<b>RAG-Token</b> 每個 token 可以用不同文件。</li>
+  </ul>
+  <div class="stat">
+    <span class="num">44.5</span><span class="vs">vs</span><span class="num muted">41.5</span>
+    <p>Natural Questions test、Exact Match：RAG-Sequence 對 DPR（extractive）。<br><span class="small">RAG 論文 Table 1。</span></p>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAG:rag-c06</li><li>RAG:rag-c07</li><li>RAG:rag-c08</li><li>RAG:rag-c11</li><li>RAG:rag-c04</li><li>RAG:rag-c05</li><li>RAG:rag-r01</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/rag.md">RAG paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/knowledge-update.md">Knowledge update</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag-sequence-token.md">RAG-Sequence 與 RAG-Token</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="slide" id="s7" aria-label="第 7 張：FiD">
+  <h2>FiD：一次融合很多 passages</h2>
+  <div class="two">
+    <svg class="fid" viewBox="0 0 320 220" role="img" aria-labelledby="f7t">
+      <title id="f7t">示意圖：三組「問題加 passage」各自經過 encoder，再一起送入同一個 decoder 產生答案</title>
+      <g class="box"><rect x="10" y="20"  width="120" height="40" rx="8"/><text x="70" y="45">Q + P1 → Enc</text></g>
+      <g class="box"><rect x="10" y="90"  width="120" height="40" rx="8"/><text x="70" y="115">Q + P2 → Enc</text></g>
+      <g class="box"><rect x="10" y="160" width="120" height="40" rx="8"/><text x="70" y="185">Q + Pn → Enc</text></g>
+      <g class="box hl"><rect x="200" y="80" width="110" height="60" rx="10"/><text x="255" y="106">Decoder</text><text x="255" y="126" class="sub">一起看全部</text></g>
+      <line x1="132" y1="40"  x2="197" y2="100" class="edge" marker-end="url(#ar)"/>
+      <line x1="132" y1="110" x2="197" y2="110" class="edge" marker-end="url(#ar)"/>
+      <line x1="132" y1="180" x2="197" y2="122" class="edge" marker-end="url(#ar)"/>
+    </svg>
+    <ul>
+      <li>每組「問題＋passage」<b>分別 encode</b>，decoder 再<b>一起看</b>全部。</li>
+      <li>分開 encode，計算量隨 passage 數<b>線性</b>成長。</li>
+      <li>FiD <b>不是新的 retriever</b>：論文用 BM25 或 DPR 取得 passages。</li>
+      <li>FiD 的實驗中，passage 越多，Exact Match 越高（FiD Figure 3，顯示範圍內）。</li>
+      <li>但原始 RAG 的 RAG-Token 在文件增加後反而下降（RAG Figure 3）。<b>k 越大不一定越好。</b></li>
+    </ul>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>FID:fid-c03</li><li>FID:fid-c04</li><li>FID:fid-c06</li><li>FID:fid-r03</li><li>RAG:rag-r06</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/fid.md">FiD paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/fusion-in-decoder.md">Fusion-in-Decoder</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/multi-passage-fusion.md">Multi-passage fusion</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/top-k-evaluation.md">Top-k evaluation</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="slide" id="s8" aria-label="第 8 張：Retrieval failure">
+  <h2>答錯了，是誰的錯？ <span class="tag">虛構範例</span></h2>
+  <p class="small">同一題：「青嶼市的捷運何時通車？哪一條線最先開？」正確答案：2015 年、藍線。</p>
+  <div class="scenarios" data-scenarios>
+    <div class="scenario-tabs" role="group" aria-label="選擇情境">
+      <button type="button" data-sc="0" aria-pressed="true">沒找到</button>
+      <button type="button" data-sc="1" aria-pressed="false">找到沒用</button>
+      <button type="button" data-sc="2" aria-pressed="false">被雜訊帶偏</button>
+      <button type="button" data-sc="3" aria-pressed="false">無中生有</button>
+    </div>
+    <table class="fail">
+      <thead><tr><th>情境</th><th>取回的 chunks</th><th>回答</th><th>問題出在</th></tr></thead>
+      <tbody>
+        <tr data-row="0"><th scope="row">沒找到</th><td>K4、K5</td><td>「不確定」或亂猜</td><td><b>Retriever</b>：claim recall 低</td></tr>
+        <tr data-row="1"><th scope="row">找到沒用</th><td>K1、K3</td><td>只答「2015 年」</td><td><b>Generator</b>：context utilization 低</td></tr>
+        <tr data-row="2"><th scope="row">被雜訊帶偏</th><td>K2、K3</td><td>「2012 年通車」</td><td><b>Generator</b>：relevant noise sensitivity</td></tr>
+        <tr data-row="3"><th scope="row">無中生有</th><td>K1</td><td>「紅線最先開」</td><td><b>Generator</b>：hallucination</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">真實論文的例子：DPR 的 dense retrieval 可能漏掉罕見關鍵詞，BM25 反而找得到（DPR Table 7）。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>DPR:dpr-c10</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag-error-attribution.md">RAG error attribution</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/retrieval-diagnostics.md">Retrieval diagnostics</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/generation-diagnostics.md">Generation diagnostics</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/dpr.md">DPR paper note</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="slide" id="s9" aria-label="第 9 張：分開評估">
+  <h2>為什麼要分開評估檢索與生成？</h2>
+  <div class="two">
+    <div class="card">
+      <h3>檢索分數</h3>
+      <p><b>Top-k accuracy</b>：有沒有找到含答案的 passage？</p>
+    </div>
+    <div class="card">
+      <h3>最終答案分數</h3>
+      <p><b>Exact Match</b>：答案字串對不對？</p>
+    </div>
+  </div>
+  <ul>
+    <li>DPR 在 Natural Questions 的 end-to-end Exact Match 是 <b>41.5</b>，BM25 是 <b>32.6</b>（DPR Table 4）。這和第 4 張的 Top-20 accuracy 是<b>不同指標</b>，不能互比。</li>
+    <li>只看最終分數，你不知道錯在「找」還是「寫」。這正是 RAGChecker 的研究動機。</li>
+  </ul>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>DPR:dpr-c09</li><li>FID:fid-c09</li><li>DPR:dpr-r04</li><li>RAGCHECKER:ragchecker-c01</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/top-k-evaluation.md">Top-k evaluation</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/claim-level-evaluation.md">Claim-level evaluation</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/dpr.md">DPR paper note</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="slide" id="s10" aria-label="第 10 張：Self-RAG">
+  <h2>Self-RAG：決定何時找，並檢查自己的回答</h2>
+  <div class="two">
+    <div>
+      <ul>
+        <li>每次都固定檢索，可能帶進不需要或離題的內容；找到相關資料，也不保證回答會忠於它。</li>
+        <li>四種 <b>reflection tokens</b>：
+          <ul class="tokens">
+            <li><code>Retrieve</code> 要不要找</li>
+            <li><code>IsRel</code> 相關嗎</li>
+            <li><code>IsSup</code> 有證據支持嗎</li>
+            <li><code>IsUse</code> 有用嗎</li>
+          </ul>
+        </li>
+        <li>Tokens 是<b>訓練出來的預測</b>，推論時不需要另外的 critic。<b>不等於可靠的內省。</b></li>
+      </ul>
+    </div>
+    <svg class="loop" viewBox="0 0 300 230" role="img" aria-labelledby="l10t">
+      <title id="l10t">Self-RAG 控制迴圈：決定、檢索、生成候選、評估、選擇，再重複</title>
+      <g class="box"><rect x="100" y="5"   width="100" height="36" rx="8"/><text x="150" y="28">Decide</text></g>
+      <g class="box"><rect x="200" y="70"  width="96"  height="36" rx="8"/><text x="248" y="93">Retrieve</text></g>
+      <g class="box"><rect x="170" y="160" width="110" height="36" rx="8"/><text x="225" y="183">Generate</text></g>
+      <g class="box hl"><rect x="20" y="160" width="110" height="36" rx="8"/><text x="75" y="183">Critique</text></g>
+      <g class="box"><rect x="4" y="70"   width="96"  height="36" rx="8"/><text x="52" y="93">Select</text></g>
+      <line x1="195" y1="35" x2="230" y2="66" class="edge" marker-end="url(#ar)"/>
+      <line x1="248" y1="108" x2="236" y2="156" class="edge" marker-end="url(#ar)"/>
+      <line x1="168" y1="178" x2="134" y2="178" class="edge" marker-end="url(#ar)"/>
+      <line x1="66" y1="158" x2="56" y2="110" class="edge" marker-end="url(#ar)"/>
+      <line x1="70" y1="68" x2="104" y2="36" class="edge" marker-end="url(#ar)"/>
+    </svg>
+  </div>
+  <div class="stat">
+    <p><b>ASQA 引用品質</b>（Self-RAG Table 2）：Self-RAG 13B precision <b>70.3</b>／recall <b>71.3</b>；Ret-ChatGPT 65.1／76.6。<br>Precision 較高、recall 較低，<b>不是全面勝出</b>。</p>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>SELF-RAG:self-rag-c01</li><li>SELF-RAG:self-rag-c03</li><li>SELF-RAG:self-rag-c04</li><li>SELF-RAG:self-rag-c17</li><li>SELF-RAG:self-rag-r03</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/self-rag.md">Self-RAG paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/adaptive-retrieval.md">Adaptive retrieval</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/reflection-tokens.md">Reflection tokens</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/citation-quality.md">Citation quality</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="slide" id="s11" aria-label="第 11 張：RAGChecker">
+  <h2>RAGChecker：用 claims 診斷錯誤</h2>
+  <div class="two">
+    <div>
+      <ul>
+        <li>把回答與標準答案拆成一句句 <b>claims</b>，逐一檢查是否被 chunks 支持。</li>
+        <li><b>Retriever 指標</b>：claim recall、context precision。</li>
+        <li><b>Generator 指標</b>：faithfulness、noise sensitivity、hallucination…</li>
+        <li>可信度：與人類判斷的 Pearson（overall）<b>61.93</b>，人類之間是 70.09；但不是每一欄都勝過 baseline。</li>
+      </ul>
+    </div>
+    <figure class="chart">
+      <svg viewBox="0 0 320 220" role="img" aria-labelledby="c11t c11d">
+        <title id="c11t">固定 GPT-4，只換 retriever 的變化</title>
+        <desc id="c11d">BM25 換成 E5-Mistral：claim recall 74.0 到 83.5；F1 50.3 到 52.7；relevant noise sensitivity 26.2 到 28.9（越低越好）。</desc>
+        <line x1="20" y1="170" x2="310" y2="170" class="axis"/>
+        <!-- scale: 100 => 140px -->
+        <rect x="30"  y="66.4" width="36" height="103.6" class="bar bm25"/><text x="48"  y="60" class="val">74.0</text>
+        <rect x="70"  y="53.1" width="36" height="116.9" class="bar dpr"/><text x="88"  y="47" class="val">83.5</text>
+        <rect x="130" y="99.6" width="36" height="70.4"  class="bar bm25"/><text x="148" y="93" class="val">50.3</text>
+        <rect x="170" y="96.2" width="36" height="73.8"  class="bar dpr"/><text x="188" y="90" class="val">52.7</text>
+        <rect x="230" y="133.3" width="36" height="36.7" class="bar bm25"/><text x="248" y="127" class="val">26.2</text>
+        <rect x="270" y="129.5" width="36" height="40.5" class="bar dpr warn"/><text x="288" y="123" class="val">28.9</text>
+        <text x="68"  y="190" class="lbl">Claim recall ↑</text>
+        <text x="168" y="190" class="lbl">F1 ↑</text>
+        <text x="268" y="190" class="lbl">NS(I) ↓</text>
+        <g class="legend"><rect x="30" y="8" width="12" height="12" class="bm25"/><text x="46" y="18">BM25</text><rect x="100" y="8" width="12" height="12" class="dpr"/><text x="116" y="18">E5-Mistral</text></g>
+      </svg>
+      <figcaption>重畫自 RAGChecker 論文 Table 3（10 datasets 平均，generator 固定為 GPT-4）。找得更多，雜訊也變多。</figcaption>
+    </figure>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAGCHECKER:ragchecker-c03</li><li>RAGCHECKER:ragchecker-c09</li><li>RAGCHECKER:ragchecker-c12</li><li>RAGCHECKER:ragchecker-r05</li><li>RAGCHECKER:ragchecker-r09</li><li>RAGCHECKER:ragchecker-r01</li><li>RAGCHECKER:ragchecker-r03</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/ragchecker.md">RAGChecker paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/claim-level-evaluation.md">Claim-level evaluation</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/retrieval-diagnostics.md">Retrieval diagnostics</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/generation-diagnostics.md">Generation diagnostics</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag-meta-evaluation.md">RAG meta evaluation</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="slide" id="s12" aria-label="第 12 張：設計取捨">
+  <h2>設計取捨：什麼時候不該多找？</h2>
+  <div class="grid4">
+    <div class="card"><h3>更多 context</h3><p>Claim recall 與 faithfulness 上升，但雜訊也變多（RAGChecker 作者觀察）。</p></div>
+    <div class="card"><h3>檢索門檻</h3><p>Self-RAG 提高 threshold、少檢索時，PubHealth 準確率變化小，PopQA 下降較多（Figure 3(c)）。</p></div>
+    <div class="card"><h3>無法同時最佳化</h3><p>Prompt 要求更忠實時，context utilization 上升，noise sensitivity 卻變差。</p></div>
+    <div class="card"><h3>成本</h3><p>Passage 很多時的效率仍是 FiD 作者列出的未解問題。</p></div>
+  </div>
+  <p class="takeaway">沒有一組「最佳 k」：要看任務、資料，以及你在意哪個指標（整理）。</p>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAGCHECKER:ragchecker-c27</li><li>SELF-RAG:self-rag-r07</li><li>RAGCHECKER:ragchecker-c28</li><li>FID:fid-c14</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/adaptive-retrieval.md">Adaptive retrieval</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/generation-diagnostics.md">Generation diagnostics</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/top-k-evaluation.md">Top-k evaluation</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/chunk.md">Chunk</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 13 ============ -->
+<section class="slide" id="s13" aria-label="第 13 張：小測驗">
+  <h2>小測驗</h2>
+  <div class="quiz" data-quiz>
+    <fieldset class="qitem" data-answer="a">
+      <legend>1. 回答漏了重要資訊，而且 claim recall 很低。最可能是哪個模組的問題？</legend>
+      <div class="opts"><button type="button" data-opt="a">Retriever</button><button type="button" data-opt="b">Generator</button></div>
+      <details class="explain"><summary>看答案</summary><p><b>Retriever。</b>需要的資訊根本沒被找回來。</p></details>
+      <p class="feedback" aria-live="polite"></p>
+    </fieldset>
+    <fieldset class="qitem" data-answer="b">
+      <legend>2. DPR 在所有資料集都比 BM25 好？</legend>
+      <div class="opts"><button type="button" data-opt="a">是</button><button type="button" data-opt="b">不是</button></div>
+      <details class="explain"><summary>看答案</summary><p><b>不是。</b>SQuAD 的 Top-20 accuracy 是 BM25 較高（63.2 vs 68.8）。</p></details>
+      <p class="feedback" aria-live="polite"></p>
+    </fieldset>
+    <fieldset class="qitem" data-answer="b">
+      <legend>3. Self-RAG 輸出 IsSup token，代表模型「確實知道」回答有證據支持？</legend>
+      <div class="opts"><button type="button" data-opt="a">是</button><button type="button" data-opt="b">不是</button></div>
+      <details class="explain"><summary>看答案</summary><p><b>不是。</b>它是訓練出來的 token 預測，標註來自 GPT-4 蒸餾，仍需要外部評估。</p></details>
+      <p class="feedback" aria-live="polite"></p>
+    </fieldset>
+  </div>
+  <details class="sources"><summary>來源</summary>
+    <ul class="claims"><li>RAGCHECKER:ragchecker-c05</li><li>DPR:dpr-r02</li><li>SELF-RAG:self-rag-c06</li><li>SELF-RAG:self-rag-c02</li></ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/rag-error-attribution.md">RAG error attribution</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/dpr.md">DPR paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/concepts/reflection-tokens.md">Reflection tokens</a></li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 14 ============ -->
+<section class="slide" id="s14" aria-label="第 14 張：總結">
+  <h2>總結</h2>
+  <ol class="summary">
+    <li><b>DPR</b> 找 evidence</li>
+    <li><b>RAG</b> 讓 generator 用 evidence</li>
+    <li><b>FiD</b> 融合更多 passages</li>
+    <li><b>Self-RAG</b> 決定何時找，並自我檢查</li>
+    <li><b>RAGChecker</b> 診斷錯在檢索還是生成</li>
+  </ol>
+  <p class="takeaway">RAG 答錯時，先問：<b>是沒找到，還是沒用好？</b></p>
+  <p class="note">發展線是教學整理，不代表後者全面勝過前者。</p>
+  <details class="sources"><summary>Sources（五篇論文與 Wiki）</summary>
+    <ul class="papers">
+      <li>Karpukhin et al. Dense Passage Retrieval. <a href="https://arxiv.org/abs/2004.04906v3">arXiv:2004.04906v3</a></li>
+      <li>Lewis et al. Retrieval-Augmented Generation. <a href="https://arxiv.org/abs/2005.11401v4">arXiv:2005.11401v4</a></li>
+      <li>Izacard &amp; Grave. Fusion-in-Decoder. <a href="https://arxiv.org/abs/2007.01282v2">arXiv:2007.01282v2</a></li>
+      <li>Asai et al. Self-RAG. <a href="https://arxiv.org/abs/2310.11511v1">arXiv:2310.11511v1</a></li>
+      <li>Ru et al. RAGChecker. <a href="https://arxiv.org/abs/2408.08067v2">arXiv:2408.08067v2</a></li>
+    </ul>
+    <ul class="wiki">
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/comparisons/five-paper-overview.md">五篇總覽</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/dpr.md">DPR paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/rag.md">RAG paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/fid.md">FiD paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/self-rag.md">Self-RAG paper note</a></li>
+      <li><a href="https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/wiki/papers/ragchecker.md">RAGChecker paper note</a></li>
+    </ul>
+  </details>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="換頁">
+  <button type="button" id="prev" aria-label="上一張">‹</button>
+  <button type="button" id="next" aria-label="下一張">›</button>
+</nav>
+<p class="hint">← → 或滑動換頁</p>
+</body>
+</html>

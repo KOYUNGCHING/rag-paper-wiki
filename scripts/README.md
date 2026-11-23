@@ -23,3 +23,13 @@ python3 scripts/test_validators.py
 ```
 
 需要 PyYAML（`validate_project.py` 讀取 manifest 與 front matter）。
+
+`validate_project.py` 也會比對 `docs/index.html` 每張 slide 的 Wiki 頁面與 claim IDs 是否
+與已核准的 `slides-src/outline.md` 一致。
+
+瀏覽器檢查（鍵盤、按鈕、觸控、互動元件、手機版面、無 JS、reduced motion）：
+
+```bash
+pip install playwright && playwright install chromium
+python3 scripts/check_slides_browser.py --shots tmp/shots
+```

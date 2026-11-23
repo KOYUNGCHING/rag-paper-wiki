@@ -44,7 +44,7 @@ flowchart TD
     style Q stroke-dasharray: 5 5
 ```
 
-T 之後的節點尚未執行，是預定流程。
+Y（發布）由使用者執行，尚未發生。
 
 ## 實際 run 順序
 
@@ -61,13 +61,16 @@ T 之後的節點尚未執行，是預定流程。
 | 009 | proposal | RAGChecker | not_started → proposed | 環境：arXiv 被 proxy 擋 |
 | 010 | ingest | RAGChecker | approved → verified | —（論文內部不一致 4 項） |
 | 011 | reconciliation | 全部 | — | validator bug + Wiki 來源宣告錯誤 |
+| 012 | outline | 全部 | — | validator：Slide 1 引用未 verified 的 index；時間超出 |
+| 013 | HTML slides | 全部 | — | 手機版流程圖過小（視覺檢查發現） |
 
 ## 三個主要 loop
 
 1. **Ingest loop**（A → N）：逐篇提案、人工核准、ingest，五篇各跑一次。
 2. **Validation loop**（K／P）：失敗時修正來源或 validator，再重跑；從未以放寬規則
    來通過。
-3. **Slide review loop**（T → W → X）：尚未執行。
+3. **Slide review loop**（T → W → X）：Run 012 修正大綱 mapping 與時間；Run 013 修正
+   手機版圖表，未需要回頭修改 Wiki。
 
 ## 責任分工
 

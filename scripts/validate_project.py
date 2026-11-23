@@ -186,6 +186,74 @@ def check_slide_mapping(errors: list[str], labels: dict[str, str]) -> int:
     return len(numbers)
 
 
+WIKI_URL = "https://github.com/KOYUNGCHING/rag-paper-wiki/blob/main/"
+SLIDE_RE = re.compile(r'<section class="slide[^"]*" id="s(\d+)"(.*?)</section>', re.S)
+HREF_RE = re.compile(r'href="([^"]+)"')
+CLAIM_LI_RE = re.compile(r"<li>([A-Z][A-Z0-9-]*):([a-z0-9-]+)</li>")
+
+
+def outline_mapping() -> dict[int, tuple[set[str], set[str]]]:
+    """Slide number -> (Wiki page paths relative to ROOT, cited claim IDs)."""
+    outline = ROOT / "slides-src" / "outline.md"
+    if not outline.exists():
+        return {}
+    parts = re.split(r"^## Slide (\d+)", outline.read_text(encoding="utf-8"), flags=re.MULTILINE)[1:]
+    mapping = {}
+    for num, body in zip(parts[0::2], parts[1::2]):
+        pages = {
+            (outline.parent / t.split("#")[0]).resolve().relative_to(ROOT).as_posix()
+            for t in LINK_RE.findall(body) if "wiki/" in t
+        }
+        mapping[int(num)] = (pages, {c for _, c in CITATION_RE.findall(body)})
+    return mapping
+
+
+def check_html_slides(errors: list[str], labels: dict[str, str]) -> int:
+    """docs/index.html must follow the approved outline's Wiki mapping."""
+    html_path = ROOT / "docs" / "index.html"
+    if not html_path.exists():
+        return 0
+    html = html_path.read_text(encoding="utf-8")
+    expected = outline_mapping()
+    slides = SLIDE_RE.findall(html)
+    numbers = [int(n) for n, _ in slides]
+    if numbers != list(range(1, len(numbers) + 1)):
+        errors.append(f"docs: slide ids are not contiguous: {numbers}")
+    if not 12 <= len(numbers) <= 14:
+        errors.append(f"docs: expected 12-14 slides, found {len(numbers)}")
+    for num, body in slides:
+        n = int(num)
+        if 'class="sources"' not in body:
+            errors.append(f"docs slide {n}: missing expandable sources")
+        pages = set()
+        for href in HREF_RE.findall(body):
+            if href.startswith(WIKI_URL):
+                rel = href[len(WIKI_URL):]
+                page = ROOT / rel
+                if not page.exists():
+                    errors.append(f"docs slide {n}: broken Wiki link {rel}")
+                elif front_matter(page).get("status") != "verified":
+                    errors.append(f"docs slide {n}: Wiki page {rel} is not verified")
+                pages.add(rel)
+        if not pages:
+            errors.append(f"docs slide {n}: no Wiki source mapping")
+        claims = set()
+        for label, claim_id in CLAIM_LI_RE.findall(body):
+            if label not in labels or claim_id not in CLAIM_IDS:
+                errors.append(f"docs slide {n}: unknown or unverified claim {label}:{claim_id}")
+            claims.add(claim_id)
+        if expected:
+            exp_pages, exp_claims = expected.get(n, (set(), set()))
+            if pages != exp_pages:
+                errors.append(f"docs slide {n}: Wiki pages differ from outline "
+                              f"(missing {sorted(exp_pages - pages)}, extra {sorted(pages - exp_pages)})")
+            if claims - exp_claims:
+                errors.append(f"docs slide {n}: claims not in approved outline {sorted(claims - exp_claims)}")
+            if exp_claims - claims:
+                errors.append(f"docs slide {n}: outline claims missing from sources {sorted(exp_claims - claims)}")
+    return len(numbers)
+
+
 def main() -> int:
     errors: list[str] = []
     labels = load_labels()
@@ -193,13 +261,15 @@ def main() -> int:
     check_lifecycle(errors, papers)
     check_concept_sources(errors, labels)
     slides = check_slide_mapping(errors, labels)
+    html_slides = check_html_slides(errors, labels)
     if errors:
         print("Project validation failed:")
         for e in errors:
             print(f"- {e}")
         return 1
     print(f"Project validation passed: {len(papers)} papers in manifest, "
-          f"lifecycle consistent, {slides} mapped slides.")
+          f"lifecycle consistent, {slides} mapped outline slides, "
+          f"{html_slides} mapped HTML slides.")
     return 0
 
 

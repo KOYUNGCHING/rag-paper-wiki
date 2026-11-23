@@ -1,6 +1,7 @@
 ---
 title: "RAG 是什麼？讓 LLM 先查資料再回答"
-status: awaiting_user_approval
+status: approved
+approved_at: 2026-11-23
 audience: 已懂基本 LLM、尚未學過 RAG 的資工學生
 slides: 14
 target_minutes: 11.5
