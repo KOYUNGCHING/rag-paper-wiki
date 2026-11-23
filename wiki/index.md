@@ -1,7 +1,7 @@
 # RAG 論文知識庫
 
 本 Wiki 將五篇正式論文整理成互相連結的論文頁、概念頁與比較頁。目前 DPR、
-原始 RAG、FiD 與 Self-RAG 已完成驗證；以下狀態不得超前於實際流程。
+原始 RAG、FiD、Self-RAG 與 RAGChecker 五篇皆已完成驗證；以下狀態不得超前於實際流程。
 
 ## 論文狀態
 
@@ -11,9 +11,9 @@
 | [RAG](papers/rag.md) | approved | ingested | verified |
 | [FiD](papers/fid.md) | approved | ingested | verified |
 | [Self-RAG](papers/self-rag.md) | approved | ingested | verified |
-| RAGChecker | proposed | not_started | not_started |
+| [RAGChecker](papers/ragchecker.md) | approved | ingested | verified |
 
-## 預定概念
+## 概念
 
 - [RAG（Retrieval-Augmented Generation）](concepts/rag.md)
 - [Dense retrieval](concepts/dense-retrieval.md)
@@ -33,14 +33,18 @@
 - [Reflection tokens](concepts/reflection-tokens.md)
 - [Critique-guided decoding](concepts/critique-guided-decoding.md)
 - [Citation quality](concepts/citation-quality.md)
-- Hallucination 與來源忠實度
+- [Claim-level evaluation](concepts/claim-level-evaluation.md)
+- [Retrieval diagnostics](concepts/retrieval-diagnostics.md) 與
+  [generation diagnostics](concepts/generation-diagnostics.md)（含 hallucination 與 faithfulness）
+- [RAG error attribution](concepts/rag-error-attribution.md)
+- [RAG meta evaluation](concepts/rag-meta-evaluation.md)
 
-有連結的項目已由 DPR／RAG／FiD／Self-RAG 證據驗證；其他項目仍是預定架構，在取得
-後續論文證據前不得填入實質 claim。
+所有項目已由五篇論文的 verified evidence 支持。
 
 ## 跨論文比較
 
 - [從 DPR 到 RAG：由找資料到用資料生成](comparisons/dpr-to-rag.md)
 - [DPR → RAG → FiD：檢索、生成與多篇融合](comparisons/dpr-rag-fid.md)
 - [DPR → RAG → FiD → Self-RAG：從檢索到可控制的生成](comparisons/dpr-rag-fid-self-rag.md)
+- [五篇總覽：從找資料、用資料，到診斷錯誤](comparisons/five-paper-overview.md)
 

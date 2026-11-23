@@ -6,6 +6,7 @@ verified_sources:
   - rag
   - fid
   - self-rag
+  - ragchecker
 ---
 
 # 檢索器（Retriever）
@@ -51,5 +52,10 @@ Contriever-MS MARCO，但部分 tasks 另加 web search 或 GTR-XXL passages。
 
 目前來源：[DPR paper note](../papers/dpr.md)、[RAG paper note](../papers/rag.md)、
 [FiD paper note](../papers/fid.md)、[Self-RAG paper note](../papers/self-rag.md)。
-RAGChecker ingest 後會再補上細粒度 retrieval diagnosis。
 
+## RAGChecker：細粒度 retrieval diagnosis
+
+RAGChecker 用 claim recall 與 chunk-level context precision 診斷 retriever。
+[RAGCHECKER:ragchecker-c09] 實驗中固定 generator、只換 retriever，就能看到 claim recall
+與 F1 一起改變。[RAGCHECKER:ragchecker-r05] 詳見
+[Retrieval diagnostics](retrieval-diagnostics.md) 與 [RAGChecker paper note](../papers/ragchecker.md)。

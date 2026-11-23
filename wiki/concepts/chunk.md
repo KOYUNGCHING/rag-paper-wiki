@@ -5,6 +5,7 @@ verified_sources:
   - dpr
   - rag
   - fid
+  - ragchecker
 ---
 
 # Chunk 與 retrieval unit
@@ -33,3 +34,9 @@ encoder unit。[FID:fid-c12] 當 retrieved passages 增加時，實驗曲線在�
 相關頁面：[Retriever](retriever.md)、[Embedding](embedding.md)、
 [Context augmentation](context-augmentation.md)。
 
+## RAGChecker：chunk 大小與雜訊
+
+RAGChecker 把 retriever precision 定在 chunk level，因為固定大小 chunk 可能同時含有
+相關與無關內容。[RAGCHECKER:ragchecker-c10] 作者觀察較大 chunk 提高 context precision
+與 claim recall，而 chunk overlap 影響不大。[RAGCHECKER:ragchecker-c27]
+[RAGCHECKER:ragchecker-c29] 預設設定是 300 tokens、overlap 0.2。[RAGCHECKER:ragchecker-c19]

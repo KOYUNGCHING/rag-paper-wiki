@@ -5,6 +5,7 @@ verified_sources:
   - dpr
   - rag
   - fid
+  - ragchecker
 ---
 
 # Top-k retrieval evaluation
@@ -43,3 +44,9 @@ Match。[FID:fid-r03] 這和原始 RAG 的 variant-dependent response 不同，�
 
 相關頁面：[Retriever](retriever.md)、[DPR paper note](../papers/dpr.md)。
 
+## RAGChecker：k 對生成端的影響
+
+RAGChecker 的 Appendix F 觀察到，增加 k 會提高 claim recall 但降低 context precision，
+同時 relevant noise sensitivity 上升（author observation）。[RAGCHECKER:ragchecker-c27]
+這補充了 DPR／FiD 只看 retrieval accuracy 或 Exact Match 的視角；詳見
+[Retrieval diagnostics](retrieval-diagnostics.md)。

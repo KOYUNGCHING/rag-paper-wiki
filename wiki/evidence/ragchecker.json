@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "paper_id": "ragchecker",
+  "paper_label": "RAGCHECKER",
+  "source": {
+    "title": "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation",
+    "version": "arXiv v2",
+    "url": "https://arxiv.org/abs/2408.08067v2",
+    "pdf_sha256": "1034bf8f0b909895540e093f2d42d6d81f1dfae51711fcf1b0379dc834c084c2"
+  },
+  "status": "verified",
+  "verified_at": "2026-11-23T22:55:00+08:00",
+  "claims": [
+    {
+      "id": "ragchecker-c01",
+      "summary": "Authors identify two evaluation challenges: RAG is modular (retriever plus generator) so metrics must assess the whole system and each module; and existing metrics such as recall@k/MRR depend on annotated chunks and rigid chunking, while n-gram metrics for generators are coarse-grained.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "research_gap",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c02",
+      "summary": "Authors state that the reliability of existing RAG metrics, i.e. their alignment with human judgments, remains under-explored.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "research_gap",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c03",
+      "summary": "RAGChecker is based on claim-level entailment checking: claims are extracted from the response and the ground-truth answer and checked against other texts; it outputs overall metrics, diagnostic retriever metrics, and diagnostic generator metrics.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "method_overview",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c04",
+      "summary": "Author claim: compared with RAGAS, TruLens and ARES (fine-grained only on some metrics) and RGB, RECALL, NoMIRACL (specific aspects), all RAGChecker metrics are claim-level and designed to give actionable insights into error sources.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c05",
+      "summary": "The framework targets two personae: a user who wants a single metric to rank systems, and a developer who needs to find causes of mistakes. Response errors are classified as retrieval errors (retriever fails to return complete and relevant context) or generator errors (generator fails to identify and leverage relevant information in context).",
+      "section": "3 RAGChecker Framework",
+      "pdf_page": 3,
+      "evidence_type": "design_principle",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c06",
+      "summary": "A modular RAG system is formulated as RAG = {R, G}: the retriever returns top-k chunks for query q from documents D, and the generator produces response m from those chunks and q.",
+      "section": "3 RAGChecker Framework",
+      "pdf_page": 3,
+      "evidence_type": "formulation",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c07",
+      "summary": "Two components enable fine-grained evaluation: a text-to-claim extractor that decomposes text into claims, and a claim-entailment checker that decides whether a claim is entailed by a reference text. A response may contain correct claims, incorrect claims, and miss ground-truth claims.",
+      "section": "3.2 Fine-grained Evaluation with Claim Entailment",
+      "pdf_page": 4,
+      "evidence_type": "method",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 1",
+        "selection": "Venn diagram of correct, incorrect and missing claims; relevant vs irrelevant chunks; metric definitions",
+        "comparison_target": "Model response claims versus ground-truth answer claims"
+      }
+    },
+    {
+      "id": "ragchecker-c08",
+      "summary": "Overall metrics: precision is the proportion of response claims entailed by the ground-truth answer; recall is the proportion of ground-truth claims entailed by the response; F1 is their harmonic mean.",
+      "section": "3.3.1 Overall Metrics",
+      "pdf_page": 5,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c09",
+      "summary": "Retriever metrics: claim recall is the proportion of ground-truth claims entailed by the retrieved chunks; context precision is chunk-level, the number of relevant chunks (chunks entailing at least one ground-truth claim) divided by k.",
+      "section": "3.3.2 Retriever Metrics",
+      "pdf_page": 5,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c10",
+      "summary": "Because a fixed-size chunk can contain both relevant and irrelevant or misleading information, even the best retriever would score below 100% on a claim-level precision; the authors therefore define precision at chunk level for interpretability.",
+      "section": "3.3.2 Retriever Metrics",
+      "pdf_page": 5,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c11",
+      "summary": "Faithfulness is the proportion of response claims entailed by the retrieved chunks; higher is better.",
+      "section": "3.3.3 Generator Metrics",
+      "pdf_page": 5,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c12",
+      "summary": "Incorrect response claims are split three ways: entailed by a relevant chunk (relevant noise sensitivity), entailed by an irrelevant chunk (irrelevant noise sensitivity), or not entailed by any retrieved chunk (hallucination); each is a proportion of all response claims.",
+      "section": "3.3.3 Generator Metrics",
+      "pdf_page": 5,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c13",
+      "summary": "Self-knowledge is the proportion of correct response claims not entailed by any chunk; a lower score is better only when the generator is expected to depend fully on retrieved context.",
+      "section": "3.3.3 Generator Metrics",
+      "pdf_page": 5,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c14",
+      "summary": "Context utilization is the number of ground-truth claims that are entailed by the retrieved chunks and also by the response, divided by the number of ground-truth claims entailed by the retrieved chunks; higher is generally preferred.",
+      "section": "3.3.3 Generator Metrics",
+      "pdf_page": 6,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c15",
+      "summary": "Appendix B gives complete formulas: relevant/irrelevant chunks are assigned by ground-truth claim entailment, and all generator noise, hallucination and self-knowledge metrics share the denominator of all response claims.",
+      "section": "B The complete formula for all metrics",
+      "pdf_page": 16,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c16",
+      "summary": "Eight RAG systems are evaluated: 2 retrievers (BM25 sparse, E5-Mistral dense) times 4 generators (GPT-4, Mixtral-8x7B, Llama3-8B, Llama3-70B). Llama3-70B is used as both claim extractor and checker via RefChecker.",
+      "section": "4.1 Experimental Setup",
+      "pdf_page": 6,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c17",
+      "summary": "The benchmark contains 4,162 queries across 10 domains, repurposed from public open-domain QA datasets, with short answers converted to long-form answers.",
+      "section": "4.1 Experimental Setup",
+      "pdf_page": 7,
+      "evidence_type": "dataset",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 1",
+        "selection": "# Query column, 10 dataset/domain rows",
+        "comparison_target": "Benchmark statistics; KIWI 71 queries to Biomedical 511 queries"
+      }
+    },
+    {
+      "id": "ragchecker-c18",
+      "summary": "Source inconsistency: the Table 1 caption lists six domains whose long-form answers were extended with GPT-4 (Finance, Lifestyle, Recreation, Technology, Science, Novel), while the Figure 2 caption lists seven, adding Writing.",
+      "section": "A Details for Benchmark Curation",
+      "pdf_page": 15,
+      "evidence_type": "source_inconsistency",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 2",
+        "selection": "Caption listing domains using the short-to-long conversion prompt",
+        "comparison_target": "Table 1 caption on PDF p. 7"
+      }
+    },
+    {
+      "id": "ragchecker-c19",
+      "summary": "Default setup: 300-token chunks with overlap ratio 0.2, top-20 chunks as context, temperature 0.0; GPT-4 is gpt-4-turbo-2024-04-09 and E5-Mistral is e5-mistral-7b-instruct.",
+      "section": "D Details of the Experiment Setup",
+      "pdf_page": 17,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c20",
+      "summary": "The meta evaluation dataset has 280 pairwise instances (10 domains x 28 system pairs); each pair is labeled by two annotators on correctness, completeness and overall assessment with a five-level relative preference.",
+      "section": "4.2 Meta Evaluation",
+      "pdf_page": 6,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c21",
+      "summary": "Ten annotators (seven in-house, three graduate students) labeled the meta evaluation; the annotation UI showed GPT-4-generated critiques comparing each response with the ground truth.",
+      "section": "C Details of Meta Evaluation",
+      "pdf_page": 17,
+      "evidence_type": "limitation_context",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c22",
+      "summary": "Author-stated limitations: retriever metrics are less insightful than generator metrics; metrics do not distinguish Neutral from Contradiction checking results; the benchmark is English, text-only and repurposed from existing datasets.",
+      "section": "H Limitations",
+      "pdf_page": 22,
+      "evidence_type": "limitation",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c23",
+      "summary": "Author observation: among generator metrics, context utilization correlates strongly with overall F1, and context utilization is relatively stable across the two retrievers.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c24",
+      "summary": "Author interpretation: generators show chunk-level faithfulness, trusting a relevant chunk as a whole while an irrelevant chunk has minimal impact.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c25",
+      "summary": "Author observation: open-source generators are faithful but tend to trust context blindly, especially when retrieval improves; GPT-4 has higher context utilization and lower noise sensitivity.",
+      "section": "4.3 Main Results",
+      "pdf_page": 9,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c26",
+      "summary": "Appendix F diagnosis setup: three systems (BM25_GPT-4, E5-Mistral_GPT-4, E5-Mistral_Llama3-70B) on three domains (Writing, Finance, KIWI), varying k in {5,10,20}, chunk size {150,300,600}, overlap {0.0,0.2,0.4}, and generation prompts.",
+      "section": "F Diagnosis on RAG for Improvements",
+      "pdf_page": 20,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c27",
+      "summary": "Author observation from Appendix F: larger k lowers context precision while larger chunk size raises it, but both raise claim recall; more context tends to raise faithfulness while context utilization worsens and relevant noise sensitivity rises.",
+      "section": "F Diagnosis on RAG for Improvements",
+      "pdf_page": 20,
+      "evidence_type": "author_claim",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figures 6-7",
+        "selection": "Radar plots for k and chunk size across Writing, Finance, KIWI",
+        "comparison_target": "Default k=20, chunk size 300 as control"
+      }
+    },
+    {
+      "id": "ragchecker-c28",
+      "summary": "Author observation: an optimized prompt asking for faithfulness and noise awareness generally improved context utilization but worsened noise sensitivity; GPT-4 improved on faithfulness-related metrics while Llama3 did not.",
+      "section": "F Diagnosis on RAG for Improvements",
+      "pdf_page": 20,
+      "evidence_type": "author_claim",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 8",
+        "selection": "Basic versus optimized prompt radar plots",
+        "comparison_target": "Default prompt (Figure 5) versus optimized prompt (Figure 9)"
+      }
+    },
+    {
+      "id": "ragchecker-c29",
+      "summary": "Author observation: higher chunk overlap generally raised context precision but did not consistently change other metrics, so overlap may not need extensive tuning.",
+      "section": "F Diagnosis on RAG for Improvements",
+      "pdf_page": 21,
+      "evidence_type": "author_claim",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 10",
+        "selection": "Overlap 0.0/0.2/0.4 radar plots",
+        "comparison_target": "Default overlap 0.2"
+      }
+    },
+    {
+      "id": "ragchecker-c30",
+      "summary": "Authors note a risk that developers may optimize for RAGChecker's specific metrics at the expense of broader utility, and that quantitative measures can neglect user experience.",
+      "section": "I Potential Negative Societal Impacts",
+      "pdf_page": 23,
+      "evidence_type": "limitation",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-c31",
+      "summary": "Authors argue generator-only evaluations with manually constructed datasets cannot reveal how generation results are entangled with retrieval behavior.",
+      "section": "2.2 Evaluation of RAG",
+      "pdf_page": 3,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "ragchecker-r01",
+      "summary": "Overall assessment Pearson correlation with human preference: RAGChecker 61.93, best baseline RAGAS Answer Similarity 48.31, human annotator correlation 70.09.",
+      "section": "4.2 Meta Evaluation",
+      "pdf_page": 7,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Overall Assessment / Pearson column",
+        "comparison_target": "RAGChecker row vs RAGAS Answer Similarity row vs Human row"
+      }
+    },
+    {
+      "id": "ragchecker-r02",
+      "summary": "Correctness Pearson: RAGChecker 49.66 versus RAGAS Answer Similarity 41.07; human annotator correlation 63.67.",
+      "section": "4.2 Meta Evaluation",
+      "pdf_page": 7,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Correctness / Pearson column",
+        "comparison_target": "RAGChecker row vs RAGAS Answer Similarity row vs Human row"
+      }
+    },
+    {
+      "id": "ragchecker-r03",
+      "summary": "Completeness Spearman: RAGAS Answer Similarity 61.35 is higher than RAGChecker 58.11, although RAGChecker is higher on completeness Pearson (60.67 vs 53.16). The authors' text says RAGChecker has the strongest correlation in all three aspects.",
+      "section": "4.2 Meta Evaluation",
+      "pdf_page": 7,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Completeness / Pearson and Spearman columns",
+        "comparison_target": "RAGChecker row vs RAGAS Answer Similarity row"
+      }
+    },
+    {
+      "id": "ragchecker-r04",
+      "summary": "Among the 8 systems, E5-Mistral_GPT-4 has the highest averaged overall F1 (52.7); the lowest is BM25_Llama3-8b (42.1).",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "Overall F1 column, all 8 rows",
+        "comparison_target": "Averaged over 10 datasets"
+      }
+    },
+    {
+      "id": "ragchecker-r05",
+      "summary": "With GPT-4 fixed, switching BM25 to E5-Mistral raises claim recall 74.0 to 83.5, context precision 52.3 to 61.8, and overall F1 50.3 to 52.7.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "CR, CP, F1 columns; BM25_GPT-4 and E5-Mistral_GPT-4 rows",
+        "comparison_target": "Same generator, different retriever"
+      }
+    },
+    {
+      "id": "ragchecker-r06",
+      "summary": "With E5-Mistral fixed, Llama3-70b vs Llama3-8b: F1 50.2 vs 45.0, context utilization 57.6 vs 55.0, relevant noise sensitivity 31.7 vs 33.5, hallucination 3.3 vs 6.6.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "F1, CU, NS(I), Hallu. columns; E5-Mistral_Llama3-70b and E5-Mistral_Llama3-8b rows",
+        "comparison_target": "Same retriever, different generator size"
+      }
+    },
+    {
+      "id": "ragchecker-r07",
+      "summary": "Relevant noise sensitivity is much larger than irrelevant noise sensitivity in every row, e.g. E5-Mistral_GPT-4 28.9 vs 3.5 and BM25_Mixtral-8x7b 34.3 vs 5.8.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "NS(I) and NS(II) columns, all 8 rows",
+        "comparison_target": "Relevant vs irrelevant noise sensitivity within each system"
+      }
+    },
+    {
+      "id": "ragchecker-r08",
+      "summary": "Moving from BM25 to E5-Mistral raises faithfulness and lowers hallucination for every generator, e.g. GPT-4 faithfulness 87.9 to 92.9 and hallucination 8.7 to 5.7.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "Faith. and Hallu. columns; BM25 rows vs E5-Mistral rows",
+        "comparison_target": "Same generator, different retriever"
+      }
+    },
+    {
+      "id": "ragchecker-r09",
+      "summary": "Moving from BM25 to E5-Mistral also raises relevant noise sensitivity for every generator: GPT-4 26.2 to 28.9, Llama3-8b 31.3 to 33.5, Llama3-70b 30.4 to 31.7, Mixtral-8x7b 34.3 to 36.5.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "NS(I) column; BM25 rows vs E5-Mistral rows",
+        "comparison_target": "Same generator, different retriever"
+      }
+    },
+    {
+      "id": "ragchecker-r10",
+      "summary": "With E5-Mistral, GPT-4 has context utilization 60.4 and relevant noise sensitivity 28.9, versus 55.0-57.6 and 31.7-36.5 for the three open-source generators.",
+      "section": "4.3 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "CU and NS(I) columns; four E5-Mistral rows",
+        "comparison_target": "GPT-4 vs Llama3-8b, Llama3-70b, Mixtral-8x7b"
+      }
+    },
+    {
+      "id": "ragchecker-r11",
+      "summary": "The retriever gain varies by domain: BM25 to E5-Mistral claim recall goes 69.4 to 86.3 on Finance but only 81.1 to 81.5 on ClapNQ.",
+      "section": "E Detailed Experiment Results",
+      "pdf_page": 23,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Tables 6 and 10",
+        "selection": "CR column for BM25 and E5-Mistral rows",
+        "comparison_target": "ClapNQ (Table 6, p. 23) vs RobustQA-Finance (Table 10, p. 25)"
+      }
+    },
+    {
+      "id": "ragchecker-r12",
+      "summary": "On the RefChecker benchmark, Llama3+Llama3 beats the best open-source combination on accuracy in all three context settings (e.g. zero context 91.89 vs 89.38), but in the noisy-context setting its Non-Factual F1 is lower (64.15 vs 64.72).",
+      "section": "G Performance Validation of RefChecker",
+      "pdf_page": 27,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 16",
+        "selection": "Accuracy and Non-Fact. F1 columns, three context settings",
+        "comparison_target": "Llama3 + Llama3 vs best purely open-sourced combination from RefChecker paper"
+      }
+    }
+  ]
+}

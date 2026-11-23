@@ -5,6 +5,7 @@ verified_sources:
   - rag
   - fid
   - self-rag
+  - ragchecker
 ---
 
 # Generator
@@ -43,3 +44,9 @@ augmented training corpus；正式 inference 由 generator 自己輸出 reflecti
 因此 generator 不只寫答案，也產生控制與評估訊號。但這些訊號仍是模型預測，不能
 取代外部 correctness 與 citation evaluation。
 
+## RAGChecker：外部診斷 generator
+
+RAGChecker 從外部檢查 generator 是否忠於 context、是否被雜訊帶偏、是否用上已找回的
+資訊。[RAGCHECKER:ragchecker-c12] [RAGCHECKER:ragchecker-c14] 與 Self-RAG 由模型自己
+預測 support 不同，這是獨立的評估框架（`wiki_synthesis`）。詳見
+[Generation diagnostics](generation-diagnostics.md)。

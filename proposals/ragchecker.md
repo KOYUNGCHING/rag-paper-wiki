@@ -1,10 +1,10 @@
 ---
 paper_id: ragchecker
 title: "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation"
-status: proposed
+status: approved
 proposal_version: 1
 proposed_at: 2026-11-23
-approved_at: null
+approved_at: 2026-11-23
 source_version: arXiv v2
 source_sha256: 1034bf8f0b909895540e093f2d42d6d81f1dfae51711fcf1b0379dc834c084c2
 ---
@@ -153,3 +153,8 @@ Section 3（PDF pp. 3–6）與 Figure 1（PDF p. 4）：
 - 更新 retriever、generator、top-k evaluation、chunk、citation quality 等既有頁面
 - 五篇論文整體 comparison：DPR → RAG → FiD → Self-RAG → RAGChecker
 - `logs/runs/010-ragchecker-ingest.md` 與 deterministic checks
+
+## 9. 核准結果
+
+使用者在本 proposal 里程碑後指示進行「下一步」，授權正式 ingest。驗證結果記錄於
+[`logs/runs/010-ragchecker-ingest.md`](../logs/runs/010-ragchecker-ingest.md)。

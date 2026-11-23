@@ -19,7 +19,7 @@ RAG 教學型 HTML 簡報。
 | Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | verified |
 | Fusion-in-Decoder | 多篇檢索內容的整合 | verified |
 | Self-RAG | 按需求檢索與自我反思 | verified |
-| RAGChecker | 分析 retrieval 與 generation 錯誤 | proposed |
+| RAGChecker | 分析 retrieval 與 generation 錯誤 | verified |
 
 詳細來源資料記錄於 [`raw/manifest.yaml`](raw/manifest.yaml)。原始 PDF 只保留
 在本機的 `raw/pdfs/`，不會提交至 Git。
@@ -50,7 +50,7 @@ docs/         GitHub Pages 的原生 HTML/CSS/JS 簡報
 
 ## 目前進度
 
-已完成 DPR、原始 RAG、FiD 與 Self-RAG 的逐篇 proposal、人工核准、正式 ingest 與
-evidence validation。目前有 4 篇 verified papers、82 個 verified claims、19 個概念頁
-與三份跨論文比較。RAGChecker 已建立 reading proposal，等待核准；HTML 簡報尚未開始。
+已完成 DPR、原始 RAG、FiD、Self-RAG 與 RAGChecker 五篇的逐篇 proposal、人工核准、
+正式 ingest 與 evidence validation。目前有 5 篇 verified papers、125 個 verified claims、
+24 個概念頁與四份跨論文比較。下一步是 Wiki reconciliation 與 reflection；HTML 簡報尚未開始。
 

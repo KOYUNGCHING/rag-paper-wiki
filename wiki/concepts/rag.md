@@ -5,6 +5,7 @@ verified_sources:
   - dpr
   - rag
   - self-rag
+  - ragchecker
 ---
 
 # Retrieval-Augmented Generation（RAG）
@@ -39,3 +40,7 @@ critique loop。[SELF-RAG:self-rag-c05]
 相關頁面：[Retriever](retriever.md)、[Generator](generator.md)、
 [Context augmentation](context-augmentation.md)。
 
+## 如何評估 RAG
+
+RAGChecker 把一次 RAG 錯誤拆成 retrieval error 或 generator error，並用 claim-level
+指標分別診斷。[RAGCHECKER:ragchecker-c05] 見 [RAG error attribution](rag-error-attribution.md)。
