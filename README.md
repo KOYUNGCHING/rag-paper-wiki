@@ -13,10 +13,10 @@ RAG 教學型 HTML 簡報。
 
 ## 核心資料
 
-| Paper | Wiki 中的角色 | 初始狀態 |
+| Paper | Wiki 中的角色 | 狀態 |
 | --- | --- | --- |
 | Dense Passage Retrieval | Dense retriever 與向量檢索基礎 | verified |
-| Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | proposed |
+| Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | verified |
 | Fusion-in-Decoder | 多篇檢索內容的整合 | not_started |
 | Self-RAG | 按需求檢索與自我反思 | not_started |
 | RAGChecker | 分析 retrieval 與 generation 錯誤 | not_started |
@@ -50,6 +50,7 @@ docs/         GitHub Pages 的原生 HTML/CSS/JS 簡報
 
 ## 目前進度
 
-專案骨架與操作契約已建立。尚未建立任何閱讀計畫、下載 PDF、ingest 論文，
-也尚未產生 Wiki 正式內容或簡報。
+已完成 DPR 與原始 RAG 論文的逐篇 proposal、人工核准、正式 ingest 與 evidence
+validation。目前有 2 篇 verified papers、37 個 verified claims、12 個概念頁與第一份
+跨論文比較。FiD、Self-RAG、RAGChecker 與 HTML 簡報尚未開始。
 

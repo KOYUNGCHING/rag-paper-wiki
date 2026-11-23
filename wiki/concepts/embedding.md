@@ -3,6 +3,7 @@ concept_id: embedding
 status: verified
 verified_sources:
   - dpr
+  - rag
 ---
 
 # Embedding 與相似度
@@ -21,6 +22,10 @@ question encoder 與 passage encoder，並以兩個向量的 inner product 排�
 
 語意相似度不保證一定抓到答案。DPR 的 Table 7 顯示 dense representation 能處理
 部分同義與改寫，也可能漏掉精確而罕見的關鍵詞。[DPR:dpr-c10]
+
+原始 RAG 使用 DPR 初始化 query/document representations，但 task fine-tuning 只更新
+query encoder，document encoder 與 index 維持固定。[RAG:rag-c06] [RAG:rag-c08]
+因此 query 與 document embeddings 在訓練期間不一定同步更新。
 
 相關頁面：[Dense retrieval](dense-retrieval.md)、[Retriever](retriever.md)。
 

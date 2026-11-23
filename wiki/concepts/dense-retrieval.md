@@ -3,6 +3,7 @@ concept_id: dense-retrieval
 status: verified
 verified_sources:
   - dpr
+  - rag
 ---
 
 # Dense retrieval
@@ -23,8 +24,13 @@ Passage embeddings 可離線計算並建立 FAISS index；runtime 只需編碼�
 鄰近 passages。[DPR:dpr-c06] 因此 dense retrieval 的完整成本同時包含 embedding
 計算、index 建立與線上查詢，不能只看單一速度數字。
 
+原始 RAG 直接沿用 DPR-style dense retriever，將 document index 視為 non-parametric
+memory。[RAG:rag-c06] 不過，RAG ablation 的 FEVER 結果提醒：word-overlap-based
+BM25 在某些 entity-centric tasks 仍可能更合適。[RAG:rag-r05]
+
 ## 目前來源範圍
 
-目前內容來自 [DPR paper note](../papers/dpr.md)。後續論文可能使用 DPR 作為元件，
-不代表它們沿用完全相同的 encoder、training data 或 index 設定。
+目前內容來自 [DPR paper note](../papers/dpr.md) 與 [RAG paper note](../papers/rag.md)。
+後續論文可能使用 DPR 作為元件，不代表它們沿用完全相同的 encoder、training data
+或 index 設定。
 

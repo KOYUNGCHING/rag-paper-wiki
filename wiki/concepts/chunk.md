@@ -3,6 +3,7 @@ concept_id: chunk
 status: verified
 verified_sources:
   - dpr
+  - rag
 ---
 
 # Chunk 與 retrieval unit
@@ -20,5 +21,10 @@ Chunk 是 retriever 實際排序的單位。切得太大會混入過多無關內
 後續 ingest 會檢查 RAG、FiD 等論文如何使用多個 retrieved passages，再擴充 chunk
 與 generator context 的關係。
 
-相關頁面：[Retriever](retriever.md)、[Embedding](embedding.md)。
+原始 RAG 已把 Wikipedia passage index 共用於多種 knowledge-intensive tasks，並將
+retrieved passage 與 input 一起交給 generator。[RAG:rag-c09] [RAG:rag-c07] 這表示
+chunk 不只是 retriever 的輸出單位，也會直接影響 generator 能看到的 context。
+
+相關頁面：[Retriever](retriever.md)、[Embedding](embedding.md)、
+[Context augmentation](context-augmentation.md)。
 

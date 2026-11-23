@@ -22,7 +22,7 @@ papers:
     local_pdf: raw/pdfs/rag.pdf
     downloaded_at: 2026-11-23
     sha256: 23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233
-    ingest_status: proposed
+    ingest_status: verified
 
   - id: fid
     short_name: FiD

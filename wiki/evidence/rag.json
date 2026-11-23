@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "paper_id": "rag",
+  "paper_label": "RAG",
+  "source": {
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "version": "arXiv v4",
+    "url": "https://arxiv.org/abs/2005.11401v4",
+    "pdf_sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233"
+  },
+  "status": "verified",
+  "verified_at": "2026-11-23T21:56:25+08:00",
+  "claims": [
+    {
+      "id": "rag-c01",
+      "summary": "Parametric language-model knowledge is difficult to revise or inspect directly and does not straightforwardly provide provenance.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "author_motivation",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c02",
+      "summary": "The paper proposes combining parametric generation with retrieval-based non-parametric memory so external knowledge can be inspected, expanded, or replaced.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "author_motivation",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c03",
+      "summary": "The RAG architecture combines a query encoder and document index with a seq2seq generator, retrieves top-k documents by MIPS, and marginalizes generation over retrieved documents.",
+      "section": "1 Introduction and Figure 1",
+      "pdf_page": 2,
+      "evidence_type": "method",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 1",
+        "selection": "Retriever, document index, generator, top-k documents, and marginalization flow",
+        "comparison_target": "Architecture overview"
+      }
+    },
+    {
+      "id": "rag-c04",
+      "summary": "RAG-Sequence uses one latent retrieved document for the complete output sequence and marginalizes sequence probabilities across top-k documents.",
+      "section": "2.1 Models",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c05",
+      "summary": "RAG-Token allows a different latent retrieved document to support each generated token and marginalizes at each token step.",
+      "section": "2.1 Models",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c06",
+      "summary": "The retriever is initialized from DPR and uses separate dense document and query representations with MIPS over a document index.",
+      "section": "2.2 Retriever: DPR",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c07",
+      "summary": "The generator is BART-large, and the input sequence is concatenated with retrieved content before generation.",
+      "section": "2.3 Generator: BART",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c08",
+      "summary": "During task fine-tuning, the query encoder and generator are updated while the document encoder and document index remain fixed.",
+      "section": "2.4 Training",
+      "pdf_page": 4,
+      "evidence_type": "method_boundary",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c09",
+      "summary": "The experiments use one Wikipedia passage index across open-domain QA, abstractive QA, question generation, and fact verification tasks.",
+      "section": "3 Experiments",
+      "pdf_page": 4,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c10",
+      "summary": "The paper extends retrieval-augmented models beyond extractive answering by conditioning a seq2seq generator on retrieved text.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "contribution",
+      "status": "verified"
+    },
+    {
+      "id": "rag-r01",
+      "summary": "On the Natural Questions test set, RAG-Sequence reports 44.5 Exact Match and DPR reports 41.5.",
+      "section": "4.1 Open-domain Question Answering",
+      "pdf_page": 6,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 1",
+        "selection": "Rows DPR and RAG-Seq.; column NQ",
+        "comparison_target": "Open-domain QA test Exact Match on Natural Questions"
+      }
+    },
+    {
+      "id": "rag-r02",
+      "summary": "On the MS-MARCO test task, BART reports Rouge-L/Bleu-1 of 38.2/41.6 while RAG-Sequence reports 40.8/44.2.",
+      "section": "4.2 Abstractive Question Answering",
+      "pdf_page": 6,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Rows BART and RAG-Seq.; MS-MARCO columns R-L and B-1",
+        "comparison_target": "MS-MARCO generation test scores without gold passages"
+      }
+    },
+    {
+      "id": "rag-r03",
+      "summary": "In the Jeopardy human assessment, RAG was judged better than BART for factuality in 42.7 percent of pairs, BART better in 7.1 percent, and 20.8 percent had no majority.",
+      "section": "4.3 Jeopardy Question Generation",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 4",
+        "selection": "Factuality column; rows RAG better, BART better, and No majority",
+        "comparison_target": "Human pairwise assessment of BART and RAG-Token generations"
+      }
+    },
+    {
+      "id": "rag-r04",
+      "summary": "On the Natural Questions development set, RAG-Sequence reports 44.0 Exact Match with learned retrieval and 31.8 when using the BM25 replacement.",
+      "section": "4.5 Retrieval Ablations",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 6",
+        "selection": "Rows RAG-Sequence and RAG-Sequence-BM25; column NQ Exact Match",
+        "comparison_target": "Learned dense retrieval versus BM25 replacement on NQ development set"
+      }
+    },
+    {
+      "id": "rag-r05",
+      "summary": "FEVER is an exception in the ablation: the BM25 replacement reports 75.1/91.6 for FVR-3/FVR-2, compared with 74.5/90.6 for learned retrieval.",
+      "section": "4.5 Retrieval Ablations",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 6",
+        "selection": "Rows RAG-Token-BM25 and RAG-Token; columns FVR-3 and FVR-2 Label Accuracy",
+        "comparison_target": "BM25 replacement versus learned retrieval on FEVER development set"
+      }
+    },
+    {
+      "id": "rag-r06",
+      "summary": "Retrieving more documents has variant- and task-dependent effects: RAG-Sequence improves monotonically on the displayed NQ range, while RAG-Token peaks and then declines.",
+      "section": "4.5 Effect of Retrieving More Documents",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3",
+        "selection": "Left NQ Exact Match panel across K retrieved documents",
+        "comparison_target": "RAG-Sequence versus RAG-Token sensitivity to retrieval count"
+      }
+    },
+    {
+      "id": "rag-c11",
+      "summary": "The index hot-swapping experiment demonstrates that changing the non-parametric Wikipedia index can update which time-specific facts the model answers without retraining the generator.",
+      "section": "4.5 Index hot-swapping",
+      "pdf_page": 8,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c12",
+      "summary": "Because the external memory contains raw text, the authors describe it as human-readable and human-writable, enabling inspection and index updates.",
+      "section": "5 Related Work - Memory-based Architectures",
+      "pdf_page": 9,
+      "evidence_type": "author_interpretation",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c13",
+      "summary": "The paper's broader-impact discussion warns that an external source such as Wikipedia can still contain factual errors and bias.",
+      "section": "Broader Impact",
+      "pdf_page": 10,
+      "evidence_type": "limitation",
+      "status": "verified"
+    },
+    {
+      "id": "rag-c14",
+      "summary": "The authors conclude that users preferred RAG generations over parametric-only BART on the evaluated task, but frame future work around better interaction between parametric and non-parametric memory.",
+      "section": "6 Discussion",
+      "pdf_page": 9,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    }
+  ]
+}
+

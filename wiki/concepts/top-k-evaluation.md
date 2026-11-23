@@ -3,6 +3,7 @@ concept_id: top-k-evaluation
 status: verified
 verified_sources:
   - dpr
+  - rag
 ---
 
 # Top-k retrieval evaluation
@@ -27,6 +28,13 @@ end-to-end Exact Match 都高於 BM25。[DPR:dpr-r01] [DPR:dpr-r04] 這支持兩
 - Single 或 Multi training
 - retriever／reader 設定
 - metric 名稱
+
+## 在 generation RAG 中的額外影響
+
+原始 RAG 不只用 top-k 作為 retrieval cutoff，也會對 top-k latent documents 的生成
+機率做 marginalization。[RAG:rag-c03] 因此增加 k 會同時改變可見 evidence、計算量與
+generation distribution。Figure 3 顯示 RAG-Sequence 與 RAG-Token 對 k 的反應不同，
+不能假設文件越多越好。[RAG:rag-r06]
 
 相關頁面：[Retriever](retriever.md)、[DPR paper note](../papers/dpr.md)。
 

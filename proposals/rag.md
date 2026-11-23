@@ -1,10 +1,10 @@
 ---
 paper_id: rag
 title: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
-status: proposed
+status: approved
 proposal_version: 1
 proposed_at: 2026-11-23
-approved_at: null
+approved_at: 2026-11-23
 source_version: arXiv v4
 source_sha256: 23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233
 ---
@@ -134,8 +134,8 @@ extractive tasks，尚未形成適用於一般 seq2seq generation 的統一方�
 - 與 DPR 的第一批 cross-paper links
 - RAG ingest run log 與 deterministic checks
 
-## 8. 等待確認
+## 8. 核准結果
 
-目前狀態為 `proposed`。請確認是否同意以上閱讀方向；核准前不會建立正式 RAG
-paper note，也不會把上述結果標記為 verified。
+使用者在本 proposal 里程碑後指示進行「下一步」，授權正式 ingest。驗證結果記錄於
+[`logs/runs/004-rag-ingest.md`](../logs/runs/004-rag-ingest.md)。
 
