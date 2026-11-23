@@ -1,10 +1,10 @@
 ---
 paper_id: dpr
 title: Dense Passage Retrieval for Open-Domain Question Answering
-status: proposed
+status: approved
 proposal_version: 1
 proposed_at: 2026-11-23
-approved_at: null
+approved_at: 2026-11-23
 source_version: arXiv v3
 source_sha256: 3e67fc1a9977715acf722d85f0b7d124b03715e975f6310a4d6c12094190912f
 ---
@@ -115,8 +115,8 @@ DPR 論文研究的是 open-domain extractive QA，不是後來常見的完整 g
 - DPR evidence records，包含 Section／PDF page／Table 或 Figure locator
 - DPR ingest run log 與 deterministic checks
 
-## 8. 等待確認
+## 8. 核准結果
 
-目前狀態為 `proposed`。請確認是否同意以上閱讀方向；核准前不會建立正式 DPR
-Wiki page，也不會把上述數字標記為 verified。
+使用者已於 2026-11-23 核准本閱讀方向。正式 ingest 與驗證結果記錄於
+[`logs/runs/002-dpr-ingest.md`](../logs/runs/002-dpr-ingest.md)。
 

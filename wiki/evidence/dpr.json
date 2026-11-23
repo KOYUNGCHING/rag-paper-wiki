@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "paper_id": "dpr",
+  "paper_label": "DPR",
+  "source": {
+    "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+    "version": "arXiv v3",
+    "url": "https://arxiv.org/abs/2004.04906v3",
+    "pdf_sha256": "3e67fc1a9977715acf722d85f0b7d124b03715e975f6310a4d6c12094190912f"
+  },
+  "status": "verified",
+  "verified_at": "2026-11-23T21:45:23+08:00",
+  "claims": [
+    {
+      "id": "dpr-c01",
+      "summary": "Open-domain QA can use a two-stage retriever-reader pipeline: retrieve a small candidate set, then inspect it for the answer.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "background",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c02",
+      "summary": "Sparse term matching is effective for exact keywords, while dense representations can connect semantically related text without exact token overlap.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "author_motivation",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c03",
+      "summary": "The paper asks whether a strong dense embedding model can be trained from question-passage or question-answer supervision without additional pretraining.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "research_question",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c04",
+      "summary": "The authors claim that the selected training setup lets a simple dense retriever outperform BM25 and that improved retrieval can improve end-to-end QA.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "author_claim",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c05",
+      "summary": "DPR uses separate question and passage encoders and ranks passages using the inner product of their vectors.",
+      "section": "3.1 Overview",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c06",
+      "summary": "Passage embeddings are computed and indexed offline; at runtime the question embedding is used to retrieve nearby passages with FAISS.",
+      "section": "3.1 Overview",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c07",
+      "summary": "In-batch negatives reuse other questions' positive passages as negatives, and the best reported training setup also includes a BM25 hard negative.",
+      "section": "3.2 Training",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c08",
+      "summary": "The retrieval unit is a passage rather than a whole document; the experiment uses fixed-length, non-overlapping text blocks with article titles prepended.",
+      "section": "4.1 Wikipedia Data Pre-processing",
+      "pdf_page": 4,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-c09",
+      "summary": "Top-k retrieval accuracy is the fraction of questions for which at least one of the top-k retrieved passages contains an answer span.",
+      "section": "2 Background",
+      "pdf_page": 2,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "dpr-r01",
+      "summary": "On the Natural Questions test set in the Single setting, Top-20 retrieval accuracy is 78.4 for DPR and 59.1 for BM25.",
+      "section": "5.1 Main Results",
+      "pdf_page": 5,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Rows None/BM25 and Single/DPR; column Top-20/NQ",
+        "comparison_target": "DPR versus BM25, Natural Questions test set, Single training"
+      }
+    },
+    {
+      "id": "dpr-r02",
+      "summary": "SQuAD is an exception in Table 2: in the Single setting, Top-20 retrieval accuracy is 63.2 for DPR and 68.8 for BM25.",
+      "section": "5.1 Main Results",
+      "pdf_page": 5,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Rows None/BM25 and Single/DPR; column Top-20/SQuAD",
+        "comparison_target": "DPR versus BM25, SQuAD test set, Single training"
+      }
+    },
+    {
+      "id": "dpr-r03",
+      "summary": "On Natural Questions development data, the in-batch configuration with one BM25 hard negative reports Top-5/20/100 accuracy of 65.8/78.0/84.9.",
+      "section": "5.2 Ablation Study on Model Training",
+      "pdf_page": 6,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 3",
+        "selection": "Row G.+BM25(1), #N 127+128; columns Top-5, Top-20, Top-100",
+        "comparison_target": "In-batch negative training configurations on Natural Questions development set"
+      }
+    },
+    {
+      "id": "dpr-r04",
+      "summary": "In the Single setting on Natural Questions, end-to-end exact match is 41.5 for DPR and 32.6 for BM25.",
+      "section": "6.2 Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 4",
+        "selection": "Rows Single/BM25 and Single/DPR; column NQ",
+        "comparison_target": "End-to-end QA exact match, Natural Questions, Single setting"
+      }
+    },
+    {
+      "id": "dpr-r05",
+      "summary": "SQuAD again differs from the general trend: in the Single setting, end-to-end exact match is 29.8 for DPR and 38.1 for BM25.",
+      "section": "6.2 Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 4",
+        "selection": "Rows Single/BM25 and Single/DPR; column SQuAD",
+        "comparison_target": "End-to-end QA exact match, SQuAD, Single setting"
+      }
+    },
+    {
+      "id": "dpr-r06",
+      "summary": "The sample-efficiency figure supports the authors' observation that a DPR model trained with 1,000 examples already exceeds the BM25 curve on Natural Questions development data.",
+      "section": "5.2 Ablation Study on Model Training",
+      "pdf_page": 5,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 1",
+        "selection": "DPR # Train: 1k curve versus BM25 across displayed k values",
+        "comparison_target": "Natural Questions development set"
+      }
+    },
+    {
+      "id": "dpr-c10",
+      "summary": "The qualitative analysis says dense retrieval captures lexical variation and semantic relations better, but can miss rare salient phrases that term matching captures.",
+      "section": "5.3 Qualitative Analysis and Appendix C",
+      "pdf_page": 13,
+      "evidence_type": "qualitative_result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 7",
+        "selection": "Two BM25-versus-DPR retrieval examples",
+        "comparison_target": "Qualitative strengths and failure modes"
+      }
+    },
+    {
+      "id": "dpr-c11",
+      "summary": "The paper studies retrieval for open-domain extractive QA, where the final answer is a span in a retrieved passage; it is not itself a complete generative RAG model.",
+      "section": "2 Background",
+      "pdf_page": 2,
+      "evidence_type": "scope",
+      "status": "verified"
+    }
+  ]
+}
+

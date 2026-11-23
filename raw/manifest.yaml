@@ -10,7 +10,7 @@ papers:
     local_pdf: raw/pdfs/dpr.pdf
     downloaded_at: 2026-11-23
     sha256: 3e67fc1a9977715acf722d85f0b7d124b03715e975f6310a4d6c12094190912f
-    ingest_status: proposed
+    ingest_status: verified
 
   - id: rag
     short_name: RAG
