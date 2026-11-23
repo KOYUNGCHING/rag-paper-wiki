@@ -53,10 +53,10 @@ papers:
     title: "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation"
     arxiv_id: "2408.08067"
     landing_page: https://arxiv.org/abs/2408.08067
-    pdf_url: https://arxiv.org/pdf/2408.08067
-    version: null
+    pdf_url: https://arxiv.org/pdf/2408.08067v2
+    version: v2
     local_pdf: raw/pdfs/ragchecker.pdf
-    downloaded_at: null
-    sha256: null
-    ingest_status: not_started
+    downloaded_at: 2026-11-23
+    sha256: 1034bf8f0b909895540e093f2d42d6d81f1dfae51711fcf1b0379dc834c084c2
+    ingest_status: proposed
 

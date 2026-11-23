@@ -11,7 +11,7 @@
 | [RAG](papers/rag.md) | approved | ingested | verified |
 | [FiD](papers/fid.md) | approved | ingested | verified |
 | [Self-RAG](papers/self-rag.md) | approved | ingested | verified |
-| RAGChecker | not_started | not_started | not_started |
+| RAGChecker | proposed | not_started | not_started |
 
 ## 預定概念
 
