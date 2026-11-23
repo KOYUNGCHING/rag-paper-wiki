@@ -1,7 +1,8 @@
 # RAG 論文知識庫
 
 本 Wiki 將五篇正式論文整理成互相連結的論文頁、概念頁與比較頁。目前 DPR、
-原始 RAG 與 FiD 已完成驗證；以下狀態不得超前於實際流程。
+原始 RAG 與 FiD 已完成驗證，Self-RAG reading proposal 等待核准；以下狀態不得
+超前於實際流程。
 
 ## 論文狀態
 
@@ -10,7 +11,7 @@
 | [DPR](papers/dpr.md) | approved | ingested | verified |
 | [RAG](papers/rag.md) | approved | ingested | verified |
 | [FiD](papers/fid.md) | approved | ingested | verified |
-| Self-RAG | not_started | not_started | not_started |
+| Self-RAG | proposed | not_started | not_started |
 | RAGChecker | not_started | not_started | not_started |
 
 ## 預定概念

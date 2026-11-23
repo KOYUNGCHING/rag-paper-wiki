@@ -18,7 +18,7 @@ RAG 教學型 HTML 簡報。
 | Dense Passage Retrieval | Dense retriever 與向量檢索基礎 | verified |
 | Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | verified |
 | Fusion-in-Decoder | 多篇檢索內容的整合 | verified |
-| Self-RAG | 按需求檢索與自我反思 | not_started |
+| Self-RAG | 按需求檢索與自我反思 | proposed |
 | RAGChecker | 分析 retrieval 與 generation 錯誤 | not_started |
 
 詳細來源資料記錄於 [`raw/manifest.yaml`](raw/manifest.yaml)。原始 PDF 只保留
@@ -52,5 +52,6 @@ docs/         GitHub Pages 的原生 HTML/CSS/JS 簡報
 
 已完成 DPR、原始 RAG 與 FiD 的逐篇 proposal、人工核准、正式 ingest 與 evidence
 validation。目前有 3 篇 verified papers、56 個 verified claims、15 個概念頁與兩份
-跨論文比較。Self-RAG、RAGChecker 與 HTML 簡報尚未開始。
+跨論文比較。Self-RAG reading proposal 已完成，正在等待人工核准；RAGChecker 與
+HTML 簡報尚未開始。
 

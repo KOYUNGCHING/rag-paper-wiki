@@ -41,12 +41,12 @@ papers:
     title: "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
     arxiv_id: "2310.11511"
     landing_page: https://arxiv.org/abs/2310.11511
-    pdf_url: https://arxiv.org/pdf/2310.11511
-    version: null
+    pdf_url: https://arxiv.org/pdf/2310.11511v1
+    version: v1
     local_pdf: raw/pdfs/self-rag.pdf
-    downloaded_at: null
-    sha256: null
-    ingest_status: not_started
+    downloaded_at: 2026-11-23
+    sha256: d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978
+    ingest_status: proposed
 
   - id: ragchecker
     short_name: RAGChecker
