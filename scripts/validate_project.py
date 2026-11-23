@@ -33,12 +33,16 @@ def front_matter(path: Path) -> dict:
     return yaml.safe_load(text.split("---\n", 2)[1]) or {}
 
 
+CLAIM_IDS: set[str] = set()
+
+
 def load_labels() -> dict[str, str]:
-    """Map paper_label -> paper_id from evidence JSON."""
+    """Map paper_label -> paper_id from evidence JSON; also collect claim IDs."""
     labels = {}
     for path in (ROOT / "wiki" / "evidence").glob("*.json"):
         record = json.loads(path.read_text(encoding="utf-8"))
         labels[record["paper_label"]] = record["paper_id"]
+        CLAIM_IDS.update(c["id"] for c in record.get("claims", []) if c.get("status") == "verified")
     return labels
 
 
@@ -170,9 +174,11 @@ def check_slide_mapping(errors: list[str], labels: dict[str, str]) -> int:
                 errors.append(f"slide {num}: broken Wiki link {target}")
             elif page.suffix == ".md" and front_matter(page).get("status") != "verified":
                 errors.append(f"slide {num}: Wiki page {target} is not verified")
-        for label, _ in CITATION_RE.findall(body):
+        for label, claim_id in CITATION_RE.findall(body):
             if label not in labels:
                 errors.append(f"slide {num}: unknown paper label {label}")
+            elif claim_id not in CLAIM_IDS:
+                errors.append(f"slide {num}: unknown or unverified claim {claim_id}")
     if numbers != list(range(1, len(numbers) + 1)):
         errors.append(f"slides: numbering is not contiguous: {numbers}")
     if not 12 <= len(numbers) <= 14:

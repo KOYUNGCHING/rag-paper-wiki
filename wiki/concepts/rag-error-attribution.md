@@ -22,8 +22,22 @@ RAGChecker 把 response 錯誤分成兩類：
 正式定義見 [Retrieval diagnostics](retrieval-diagnostics.md) 與
 [Generation diagnostics](generation-diagnostics.md)。
 
-問題：「某城市的捷運何時通車？哪一條線最先開？」ground truth 有兩個 claims：A（通車
-年份）與 B（最先開的路線）。
+「青嶼市」是**虛構城市**，以下內容全部是教學用假資料，不是事實，也不是論文資料。
+
+問題：「青嶼市的捷運何時通車？哪一條線最先開？」ground truth 有兩個 claims：
+A（2015 年通車）與 B（藍線最先開）。
+
+虛構知識庫（chunks）：
+
+| Chunk | 內容 | 相對於問題 |
+| --- | --- | --- |
+| K1 | 青嶼市捷運於 2015 年通車，首條營運路線為藍線。 | relevant（含 A、B） |
+| K2 | 青嶼市捷運原計畫 2012 年完工，因工程延誤延後通車。 | relevant（含 A 的背景，也含可誤導的「2012」） |
+| K3 | 藍線連接青嶼車站與港區，全長 12 公里。 | relevant（含 B 的路線資訊） |
+| K4 | 綠線於 2019 年加入營運。 | irrelevant（不含 A、B） |
+| K5 | 青嶼市公車路網於 1998 年重整。 | irrelevant |
+
+這份假資料用於簡報的完整互動 RAG 範例與 retrieval-failure 範例。
 
 | 情境 | 現象 | 主要反映的指標 |
 | --- | --- | --- |
