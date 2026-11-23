@@ -17,12 +17,12 @@ papers:
     title: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
     arxiv_id: "2005.11401"
     landing_page: https://arxiv.org/abs/2005.11401
-    pdf_url: https://arxiv.org/pdf/2005.11401
-    version: null
+    pdf_url: https://arxiv.org/pdf/2005.11401v4
+    version: v4
     local_pdf: raw/pdfs/rag.pdf
-    downloaded_at: null
-    sha256: null
-    ingest_status: not_started
+    downloaded_at: 2026-11-23
+    sha256: 23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233
+    ingest_status: proposed
 
   - id: fid
     short_name: FiD

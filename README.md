@@ -16,7 +16,7 @@ RAG 教學型 HTML 簡報。
 | Paper | Wiki 中的角色 | 初始狀態 |
 | --- | --- | --- |
 | Dense Passage Retrieval | Dense retriever 與向量檢索基礎 | verified |
-| Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | not_started |
+| Retrieval-Augmented Generation | Retriever 與 generator 的核心架構 | proposed |
 | Fusion-in-Decoder | 多篇檢索內容的整合 | not_started |
 | Self-RAG | 按需求檢索與自我反思 | not_started |
 | RAGChecker | 分析 retrieval 與 generation 錯誤 | not_started |

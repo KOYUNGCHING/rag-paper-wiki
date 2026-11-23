@@ -8,7 +8,7 @@
 | Paper | Proposal | Ingest | Evidence |
 | --- | --- | --- | --- |
 | [DPR](papers/dpr.md) | approved | ingested | verified |
-| RAG | not_started | not_started | not_started |
+| RAG | proposed | not_started | not_started |
 | FiD | not_started | not_started | not_started |
 | Self-RAG | not_started | not_started | not_started |
 | RAGChecker | not_started | not_started | not_started |
