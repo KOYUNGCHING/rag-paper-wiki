@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - dpr
   - rag
+  - self-rag
 ---
 
 # Retrieval-Augmented Generation（RAG）
@@ -27,9 +28,13 @@ Retrieve → Augment → Generate
 
 ## 名稱範圍
 
-本頁先描述 Lewis et al. 的原始 RAG。後來「RAG」常被廣義用來指任何 retrieval +
+本頁前三階段先描述 Lewis et al. 的原始 RAG。後來「RAG」常被廣義用來指 retrieval +
 generation pipeline，但那些系統不一定使用 BART、latent-document marginalization 或
-joint fine-tuning。廣義定義會等更多來源加入後標記為 `wiki_synthesis`。
+joint fine-tuning。Self-RAG 就把固定流程改成可重複的 decide、retrieve、generate、
+critique loop。[SELF-RAG:self-rag-c05]
+
+「廣義 RAG 包含多種 retrieval-generation architectures」是跨論文整理，標記為
+`wiki_synthesis`；不能把原始 RAG 的 method details 套用到所有後續系統。
 
 相關頁面：[Retriever](retriever.md)、[Generator](generator.md)、
 [Context augmentation](context-augmentation.md)。

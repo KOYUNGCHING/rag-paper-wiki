@@ -5,6 +5,7 @@ verified_sources:
   - dpr
   - rag
   - fid
+  - self-rag
 ---
 
 # 檢索器（Retriever）
@@ -40,7 +41,15 @@ FiD 則把 retriever 視為外部模組，依 dataset 使用 DPR 或 BM25，沒�
 joint-train retriever。[FID:fid-c06] [FID:fid-c08] 這讓 FiD 可專注 multi-passage reader，
 也代表 retrieval error 不會在同一訓練流程中被自動修正。
 
+## Self-RAG：何時啟動 retriever？
+
+Self-RAG 把 retrieval timing 交給 Retrieve token，或用該 token 的 normalized
+probability threshold 觸發檢索。[SELF-RAG:self-rag-c09] 實驗預設使用
+Contriever-MS MARCO，但部分 tasks 另加 web search 或 GTR-XXL passages。
+[SELF-RAG:self-rag-c13] 這表示 adaptive retrieval 與 retriever quality 是兩個不同
+問題：模型可以正確決定「現在要找」，仍可能找回不理想的 passages。
+
 目前來源：[DPR paper note](../papers/dpr.md)、[RAG paper note](../papers/rag.md)、
-[FiD paper note](../papers/fid.md)。Self-RAG 與 RAGChecker ingest 後會補上何時檢索
-及細粒度評估。
+[FiD paper note](../papers/fid.md)、[Self-RAG paper note](../papers/self-rag.md)。
+RAGChecker ingest 後會再補上細粒度 retrieval diagnosis。
 

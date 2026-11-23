@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - rag
   - fid
+  - self-rag
 ---
 
 # Context augmentation
@@ -22,4 +23,9 @@ Augmentation 是 retrieval 與 generation 之間的橋樑：只建立 index 還�
 FiD 採用另一種 augmentation：每篇 passage 各自與 question 組成 encoder input，
 encoder outputs 才被串接給 decoder。[FID:fid-c03] 因此「把 retrieved context 加進
 generator」可以有不同的 fusion location 與計算方式。
+
+Self-RAG 則先判斷是否需要 augmentation。需要 retrieval 時，模型對每篇 passage
+分別判斷 relevance、生成候選 segment、評估 support 與 utility，再選擇候選；不需要
+時可直接生成。[SELF-RAG:self-rag-c05] 因此 augmentation 從固定 preprocessing step
+變成 generation loop 中的 conditional branch。
 

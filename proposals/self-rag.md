@@ -1,10 +1,10 @@
 ---
 paper_id: self-rag
 title: "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
-status: proposed
+status: approved
 proposal_version: 1
 proposed_at: 2026-11-23
-approved_at: null
+approved_at: 2026-11-23
 source_version: arXiv v1
 source_sha256: d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978
 ---
@@ -148,7 +148,7 @@ Self-RAG 將補上目前 Wiki 缺少的「是否檢索」與「生成後如何�
 - 建立 DPR → RAG → FiD → Self-RAG 的跨論文比較與連結
 - Self-RAG ingest run log 與 deterministic checks
 
-## 8. 核准狀態
+## 8. 核准結果
 
-目前停在 `proposed`。收到使用者明確同意後，才能正式 ingest、建立 claim-level
-evidence 並將狀態推進到 `verified`。
+使用者在本 proposal 里程碑後指示進行「下一步」，授權正式 ingest。驗證結果記錄於
+[`logs/runs/008-self-rag-ingest.md`](../logs/runs/008-self-rag-ingest.md)。

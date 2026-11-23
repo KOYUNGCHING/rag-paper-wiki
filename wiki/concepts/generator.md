@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - rag
   - fid
+  - self-rag
 ---
 
 # Generator
@@ -31,4 +32,14 @@ FiD 把每個 question-passage pair 分開 encode，再讓 decoder attention 所
 representations。[FID:fid-c03] 這與原始 RAG 對 latent documents 做 marginalization
 不同，但兩者都顯示 generator 可以利用 retrieved context，而不是只做 answer span
 extraction。
+
+## Self-RAG 的 generator
+
+Self-RAG generator 除了文字，也把 Retrieve、IsRel、IsSup、IsUse 當成 next-token
+targets 學習。[SELF-RAG:self-rag-c04] [SELF-RAG:self-rag-c08] Critic 只負責離線建立
+augmented training corpus；正式 inference 由 generator 自己輸出 reflection tokens，
+不需再執行 critic。[SELF-RAG:self-rag-c17]
+
+因此 generator 不只寫答案，也產生控制與評估訊號。但這些訊號仍是模型預測，不能
+取代外部 correctness 與 citation evaluation。
 

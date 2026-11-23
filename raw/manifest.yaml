@@ -46,7 +46,7 @@ papers:
     local_pdf: raw/pdfs/self-rag.pdf
     downloaded_at: 2026-11-23
     sha256: d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978
-    ingest_status: proposed
+    ingest_status: verified
 
   - id: ragchecker
     short_name: RAGChecker

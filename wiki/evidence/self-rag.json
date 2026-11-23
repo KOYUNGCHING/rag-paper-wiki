@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "paper_id": "self-rag",
+  "paper_label": "SELF-RAG",
+  "source": {
+    "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection",
+    "version": "arXiv v1",
+    "url": "https://arxiv.org/abs/2310.11511v1",
+    "pdf_sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978"
+  },
+  "status": "verified",
+  "verified_at": "2026-11-23T22:22:23+08:00",
+  "claims": [
+    {
+      "id": "self-rag-c01",
+      "summary": "Conventional RAG often retrieves a fixed number of passages regardless of need; unnecessary or off-topic passages can reduce versatility or generation quality.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "author_motivation",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c02",
+      "summary": "Self-RAG trains one language model to retrieve on demand and to generate reflection tokens that evaluate retrieved passages and its own output.",
+      "section": "1 Introduction",
+      "pdf_page": 2,
+      "evidence_type": "method_overview",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 1",
+        "selection": "Retrieve-on-demand, parallel passage generation, critique, and segment selection flow",
+        "comparison_target": "Conventional fixed-retrieval RAG versus Self-RAG"
+      }
+    },
+    {
+      "id": "self-rag-c03",
+      "summary": "The paper argues that even a relevant retrieved passage does not by itself guarantee that the generated output will be consistent with that passage.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "research_gap",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c04",
+      "summary": "Self-RAG defines four reflection-token groups: Retrieve for retrieval timing, IsRel for passage relevance, IsSup for passage support of verifiable output statements, and IsUse for overall response utility.",
+      "section": "3.1 Problem Formalization and Overview",
+      "pdf_page": 4,
+      "evidence_type": "method",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 1",
+        "selection": "All four reflection-token rows and their output values",
+        "comparison_target": "Roles of retrieval and critique tokens"
+      }
+    },
+    {
+      "id": "self-rag-c05",
+      "summary": "At inference, Self-RAG either generates a segment without retrieval or retrieves passages, evaluates relevance, generates passage-conditioned candidates, evaluates support and utility, and ranks the candidates.",
+      "section": "3.1 Problem Formalization and Overview",
+      "pdf_page": 4,
+      "evidence_type": "method",
+      "status": "verified",
+      "locator": {
+        "kind": "algorithm",
+        "label": "Algorithm 1",
+        "selection": "Lines 2-10",
+        "comparison_target": "Self-RAG inference branches with and without retrieval"
+      }
+    },
+    {
+      "id": "self-rag-c06",
+      "summary": "The critic training data is created by prompting GPT-4 for reflection-token labels; the authors collect roughly 4,000 to 20,000 supervised examples for each token type and distill them into an in-house critic.",
+      "section": "3.2.1 Training the Critic Model",
+      "pdf_page": 5,
+      "evidence_type": "training_setup",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c07",
+      "summary": "The critic is initialized from Llama2-7B and reports over 90 percent agreement with GPT-4 predictions for most reflection-token categories.",
+      "section": "3.2.1 Training the Critic Model",
+      "pdf_page": 5,
+      "evidence_type": "training_setup",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c08",
+      "summary": "The generator is trained with a standard next-token objective on outputs augmented with retrieved passages and reflection tokens; retrieved text chunks are masked from the training loss.",
+      "section": "3.2.2 Training the Generator Model",
+      "pdf_page": 5,
+      "evidence_type": "training_method",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c09",
+      "summary": "Retrieval can be triggered directly by the predicted Retrieve token or by comparing its normalized probability with an adjustable threshold.",
+      "section": "3.3 Self-RAG Inference",
+      "pdf_page": 6,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c10",
+      "summary": "For retrieved passages, Self-RAG uses segment-level beam search whose score combines generation probability with weighted IsRel, IsSup, and IsUse probabilities; undesirable critique outcomes can alternatively be hard-filtered.",
+      "section": "3.3 Self-RAG Inference",
+      "pdf_page": 6,
+      "evidence_type": "decoding_method",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c11",
+      "summary": "The evaluation covers six tasks across short-form open-domain QA, closed-set fact verification and reasoning, biography generation, and long-form ASQA, using task-specific correctness, factuality, fluency, and citation metrics.",
+      "section": "4.1 Tasks and Datasets",
+      "pdf_page": 7,
+      "evidence_type": "experimental_scope",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c12",
+      "summary": "The final training setup uses 150,000 instruction-output pairs, Llama2 7B and 13B generator bases, and a Llama2-7B critic base.",
+      "section": "4.3 Experimental Settings",
+      "pdf_page": 7,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c13",
+      "summary": "The default retriever is Contriever-MS MARCO; biographies and open-domain QA add web-search passages, while ASQA uses author-provided GTR-XXL passages across baselines.",
+      "section": "4.3 Experimental Settings",
+      "pdf_page": 7,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c14",
+      "summary": "PopQA uses 1,399 rare-entity queries and TriviaQA uses an 11,313-query split; both are scored by whether a gold answer appears in the generated text rather than strict exact match.",
+      "section": "4.1 Tasks and Datasets",
+      "pdf_page": 7,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c15",
+      "summary": "The human evaluation samples 50 PopQA outputs and 50 biography outputs and checks plausibility-and-support plus agreement with predicted IsRel and IsSup tokens.",
+      "section": "5.2 Analysis - Human Evaluations",
+      "pdf_page": 10,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c16",
+      "summary": "The authors note that depending on a proprietary model such as GPT-4 for feedback can increase API costs and reduce reproducibility, motivating distillation into an in-house critic.",
+      "section": "3.2.1 Training the Critic Model",
+      "pdf_page": 5,
+      "evidence_type": "limitation",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-c17",
+      "summary": "After offline corpus augmentation, the final generator learns to emit reflection tokens itself and does not require the critic model at inference time.",
+      "section": "3.1 Problem Formalization and Overview",
+      "pdf_page": 4,
+      "evidence_type": "method_boundary",
+      "status": "verified"
+    },
+    {
+      "id": "self-rag-r01",
+      "summary": "Self-RAG 13B reports 55.8 PopQA accuracy, 69.3 TriviaQA accuracy, 74.5 PubHealth accuracy, and 73.1 ARC accuracy; Self-RAG 7B reports 54.9, 66.4, 72.4, and 67.3 respectively.",
+      "section": "5.1 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Our Self-RAG 7B and 13B rows; PopQA, TQA, Pub, and ARC accuracy columns",
+        "comparison_target": "Short-form and closed-set task performance"
+      }
+    },
+    {
+      "id": "self-rag-r02",
+      "summary": "For biography generation, Self-RAG 7B and 13B report FactScore 81.2 and 80.2; on ASQA they report string exact match 30.0 and 31.7, ROUGE 35.7 and 37.0, and MAUVE 74.3 and 71.6.",
+      "section": "5.1 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Our Self-RAG 7B and 13B rows; Bio FactScore and ASQA em, rouge, and MAUVE columns",
+        "comparison_target": "Long-form factuality, correctness, and fluency"
+      }
+    },
+    {
+      "id": "self-rag-r03",
+      "summary": "On ASQA, Self-RAG 13B reports citation precision 70.3 and recall 71.3, while retrieval-augmented ChatGPT reports precision 65.1 and recall 76.6.",
+      "section": "5.1 Main Results",
+      "pdf_page": 8,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Ret-ChatGPT and Our Self-RAG 13B rows; ASQA citation precision and recall columns",
+        "comparison_target": "ASQA citation quality dimensions"
+      }
+    },
+    {
+      "id": "self-rag-r04",
+      "summary": "In the 50,000-instance training ablation, Self-RAG scores 45.5 on PopQA, 73.5 on PubHealth, and 32.1 ASQA string exact match, compared with 42.6, 72.0, and 18.1 when the critic is removed.",
+      "section": "5.2 Analysis - Ablation Studies",
+      "pdf_page": 9,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3(a)",
+        "selection": "Self-RAG (50k) and No Critic C rows across PQA, Med, and AS columns",
+        "comparison_target": "Effect of critic-based training in the 50k ablation setup"
+      }
+    },
+    {
+      "id": "self-rag-r05",
+      "summary": "In the same ablation, always retrieving only the top-one passage scores 41.8 on PopQA and 28.6 on ASQA, while removing the IsSup score yields 44.1 and 30.6, below Self-RAG's 45.5 and 32.1.",
+      "section": "5.2 Analysis - Ablation Studies",
+      "pdf_page": 9,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3(a)",
+        "selection": "Self-RAG (50k), Retrieve top1, and Remove IsSup rows; PQA and AS columns",
+        "comparison_target": "Adaptive multi-passage retrieval and support-aware decoding ablations"
+      }
+    },
+    {
+      "id": "self-rag-r06",
+      "summary": "Increasing the IsSup decoding weight on ASQA raises citation precision but lowers MAUVE, showing a support-versus-fluency trade-off in the displayed setting.",
+      "section": "5.2 Analysis - Effects of Inference-time Customization",
+      "pdf_page": 9,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3(b)",
+        "selection": "Citation precision and MAUVE curves as the IsSup weight increases",
+        "comparison_target": "ASQA support emphasis versus fluency"
+      }
+    },
+    {
+      "id": "self-rag-r07",
+      "summary": "As the retrieval threshold increases, retrieval frequency falls on PubHealth and PopQA; normalized accuracy changes little on PubHealth but falls more on PopQA in the displayed range.",
+      "section": "5.2 Analysis - Efficiency and Accuracy Trade-off",
+      "pdf_page": 9,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3(c)",
+        "selection": "Retrieval frequency and normalized accuracy curves for PubHealth and PopQA",
+        "comparison_target": "Task-dependent effect of retrieval threshold"
+      }
+    },
+    {
+      "id": "self-rag-r08",
+      "summary": "Across the tested 5k, 10k, 20k, 50k, and 150k training sizes, Self-RAG shows an overall upward trajectory on PopQA and ASQA citation precision, while PubHealth changes less consistently.",
+      "section": "5.2 Analysis - Effects of Training Data Size",
+      "pdf_page": 10,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 4(a-c)",
+        "selection": "PopQA, PubHealth, and ASQA citation-precision curves over training size",
+        "comparison_target": "Self-RAG sensitivity to training-data scale"
+      }
+    },
+    {
+      "id": "self-rag-r09",
+      "summary": "In the 50-sample-per-task human evaluation, plausibility-and-support is 92.5 for PopQA and 70.0 for biography; IsRel agreement is 95.0 and 90.0, and IsSup agreement is 90.0 and 85.0.",
+      "section": "5.2 Analysis - Human Evaluations",
+      "pdf_page": 10,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 4(d)",
+        "selection": "Pop and Bio columns for S&P, IsRel, and IsSup",
+        "comparison_target": "Small-sample human assessment of outputs and reflection tokens"
+      }
+    }
+  ]
+}
