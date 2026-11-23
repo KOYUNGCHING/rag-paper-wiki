@@ -7,7 +7,7 @@
 
 | Paper | Proposal | Ingest | Evidence |
 | --- | --- | --- | --- |
-| DPR | not_started | not_started | not_started |
+| DPR | proposed | not_started | not_started |
 | RAG | not_started | not_started | not_started |
 | FiD | not_started | not_started | not_started |
 | Self-RAG | not_started | not_started | not_started |
