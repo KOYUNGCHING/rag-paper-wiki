@@ -3,6 +3,7 @@ concept_id: generator
 status: verified
 verified_sources:
   - rag
+  - fid
 ---
 
 # Generator
@@ -23,4 +24,11 @@ Generator 的輸出品質不能只由 retrieval accuracy 推定。需要分別�
 
 第三點是本 Wiki 的教學性拆解，標記為 `wiki_synthesis`；後續 RAGChecker 將補上更
 完整的診斷分類。
+
+## FiD 的多 passage generator
+
+FiD 把每個 question-passage pair 分開 encode，再讓 decoder attention 所有 encoder
+representations。[FID:fid-c03] 這與原始 RAG 對 latent documents 做 marginalization
+不同，但兩者都顯示 generator 可以利用 retrieved context，而不是只做 answer span
+extraction。
 

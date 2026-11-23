@@ -3,6 +3,7 @@ concept_id: context-augmentation
 status: verified
 verified_sources:
   - rag
+  - fid
 ---
 
 # Context augmentation
@@ -17,4 +18,8 @@ Augmentation 是 retrieval 與 generation 之間的橋樑：只建立 index 還�
 原始 RAG 會分別對 top-k documents 產生條件機率，再依
 [RAG-Sequence／RAG-Token](rag-sequence-token.md) 的方式 marginalize，而不是單純把
 所有 passages 無條件合併。[RAG:rag-c04] [RAG:rag-c05]
+
+FiD 採用另一種 augmentation：每篇 passage 各自與 question 組成 encoder input，
+encoder outputs 才被串接給 decoder。[FID:fid-c03] 因此「把 retrieved context 加進
+generator」可以有不同的 fusion location 與計算方式。
 

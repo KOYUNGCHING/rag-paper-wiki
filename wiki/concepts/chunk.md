@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - dpr
   - rag
+  - fid
 ---
 
 # Chunk 與 retrieval unit
@@ -24,6 +25,10 @@ Chunk 是 retriever 實際排序的單位。切得太大會混入過多無關內
 原始 RAG 已把 Wikipedia passage index 共用於多種 knowledge-intensive tasks，並將
 retrieved passage 與 input 一起交給 generator。[RAG:rag-c09] [RAG:rag-c07] 這表示
 chunk 不只是 retriever 的輸出單位，也會直接影響 generator 能看到的 context。
+
+FiD 同樣使用固定長度、互不重疊的 Wikipedia passages，並把每篇 passage 當作獨立
+encoder unit。[FID:fid-c12] 當 retrieved passages 增加時，實驗曲線在觀察範圍內上升，
+但 encoder/decoder 成本也增加。[FID:fid-r03]
 
 相關頁面：[Retriever](retriever.md)、[Embedding](embedding.md)、
 [Context augmentation](context-augmentation.md)。

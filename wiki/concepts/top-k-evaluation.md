@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - dpr
   - rag
+  - fid
 ---
 
 # Top-k retrieval evaluation
@@ -35,6 +36,10 @@ end-to-end Exact Match 都高於 BM25。[DPR:dpr-r01] [DPR:dpr-r04] 這支持兩
 機率做 marginalization。[RAG:rag-c03] 因此增加 k 會同時改變可見 evidence、計算量與
 generation distribution。Figure 3 顯示 RAG-Sequence 與 RAG-Token 對 k 的反應不同，
 不能假設文件越多越好。[RAG:rag-r06]
+
+FiD 在三個 validation curves 的顯示範圍內，隨 retrieved passages 增加而提高 Exact
+Match。[FID:fid-r03] 這和原始 RAG 的 variant-dependent response 不同，顯示 k 的
+效果取決於 fusion architecture、task 與運算預算。
 
 相關頁面：[Retriever](retriever.md)、[DPR paper note](../papers/dpr.md)。
 

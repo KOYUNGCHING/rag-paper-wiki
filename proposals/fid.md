@@ -1,10 +1,10 @@
 ---
 paper_id: fid
 title: Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering
-status: proposed
+status: approved
 proposal_version: 1
 proposed_at: 2026-11-23
-approved_at: null
+approved_at: 2026-11-23
 source_version: arXiv v2
 source_sha256: f1ee7e927c3fb31beb2146f8c205692a91b40dadd65d80e025c6686e4d430953
 ---
@@ -128,8 +128,8 @@ FiD 將補上目前 Wiki 缺少的「多 passage context 如何整合」：
 - 建立 DPR → RAG → FiD 的跨論文比較與連結
 - FiD ingest run log 與 deterministic checks
 
-## 8. 等待確認
+## 8. 核准結果
 
-目前狀態為 `proposed`。請確認是否同意以上閱讀方向；核准前不會建立正式 FiD
-paper note，也不會把上述結果標記為 verified。
+使用者在本 proposal 里程碑後指示進行「下一步」，授權正式 ingest。驗證結果記錄於
+[`logs/runs/006-fid-ingest.md`](../logs/runs/006-fid-ingest.md)。
 

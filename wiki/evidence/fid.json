@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "paper_id": "fid",
+  "paper_label": "FID",
+  "source": {
+    "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+    "version": "arXiv v2",
+    "url": "https://arxiv.org/abs/2007.01282v2",
+    "pdf_sha256": "f1ee7e927c3fb31beb2146f8c205692a91b40dadd65d80e025c6686e4d430953"
+  },
+  "status": "verified",
+  "verified_at": "2026-11-23T22:08:44+08:00",
+  "claims": [
+    {
+      "id": "fid-c01",
+      "summary": "Closed-book generative QA must store factual information in model weights and therefore relies on very large models that are expensive to train and query.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "author_motivation",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c02",
+      "summary": "FiD follows a two-step approach: retrieve support passages from an external knowledge source, then generate an answer conditioned on the question and passages.",
+      "section": "1 Introduction",
+      "pdf_page": 1,
+      "evidence_type": "method_overview",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 1",
+        "selection": "Question, retrieved support passages, generative seq2seq model, and answer flow",
+        "comparison_target": "Two-stage open-domain QA overview"
+      }
+    },
+    {
+      "id": "fid-c03",
+      "summary": "FiD encodes each question-passage pair independently, concatenates the resulting representations, and lets one decoder attend jointly over them to generate the answer.",
+      "section": "3 Method",
+      "pdf_page": 2,
+      "evidence_type": "method",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 2",
+        "selection": "Independent encoders, representation concatenation, shared decoder, and answer",
+        "comparison_target": "Fusion-in-Decoder architecture"
+      }
+    },
+    {
+      "id": "fid-c04",
+      "summary": "Independent passage encoding keeps encoder self-attention local to one context, so computation grows linearly rather than quadratically with the number of passages.",
+      "section": "3 Method",
+      "pdf_page": 3,
+      "evidence_type": "scaling_analysis",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c05",
+      "summary": "Joint decoder attention over concatenated passage representations is intended to aggregate evidence across multiple passages.",
+      "section": "3 Method",
+      "pdf_page": 3,
+      "evidence_type": "author_interpretation",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c06",
+      "summary": "The paper uses either BM25 or DPR for support-passage retrieval; FiD itself contributes the generative reader rather than a new retriever.",
+      "section": "3 Method - Retrieval",
+      "pdf_page": 3,
+      "evidence_type": "method_boundary",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c07",
+      "summary": "The generative reader can be initialized from T5 or BART and formats each input from the question, passage title, and passage text.",
+      "section": "3 Method - Reading",
+      "pdf_page": 3,
+      "evidence_type": "method",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c08",
+      "summary": "The experiments use DPR retrieval for Natural Questions and TriviaQA and BM25 retrieval for SQuAD, so dataset results do not share one retriever setting.",
+      "section": "4 Experiments - Technical details",
+      "pdf_page": 4,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c09",
+      "summary": "Answers are evaluated with normalized Exact Match: a generated answer is correct if it matches an acceptable reference after normalization.",
+      "section": "4 Experiments - Evaluation",
+      "pdf_page": 4,
+      "evidence_type": "metric_definition",
+      "status": "verified"
+    },
+    {
+      "id": "fid-r01",
+      "summary": "On the Natural Questions test setting, FiD-large reports 51.4 Exact Match, FiD-base 48.2, RAG 44.5, and DPR 41.5.",
+      "section": "4 Experiments - Comparison to state-of-the-art",
+      "pdf_page": 3,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 1",
+        "selection": "Rows DPR, RAG, Fusion-in-Decoder base/large; column NQ EM",
+        "comparison_target": "Natural Questions open-domain QA test Exact Match"
+      }
+    },
+    {
+      "id": "fid-r02",
+      "summary": "On TriviaQA, FiD-large reports 67.6 on the open-domain test and 80.1 on the hidden test, while RAG reports 56.1 and 68.0 respectively.",
+      "section": "4 Experiments - Comparison to state-of-the-art",
+      "pdf_page": 3,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 1",
+        "selection": "Rows RAG and Fusion-in-Decoder large; two TriviaQA EM columns",
+        "comparison_target": "TriviaQA open-domain and hidden test Exact Match"
+      }
+    },
+    {
+      "id": "fid-r03",
+      "summary": "Across the displayed validation ranges for Natural Questions, TriviaQA, and SQuAD, FiD-base Exact Match rises as more passages are retrieved.",
+      "section": "4 Experiments - Scaling with number of passages",
+      "pdf_page": 4,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "figure",
+        "label": "Figure 3",
+        "selection": "All three validation curves across the displayed passage counts",
+        "comparison_target": "FiD-base sensitivity to number of retrieved passages"
+      }
+    },
+    {
+      "id": "fid-r04",
+      "summary": "When testing with 100 passages and without extra fine-tuning, training on 5 versus 100 passages changes Natural Questions Exact Match from 37.8 to 46.5 and TriviaQA from 58.1 to 64.7.",
+      "section": "4 Experiments - Impact of the number of training passages",
+      "pdf_page": 5,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Training Passages rows 5 and 100; Natural Questions and TriviaQA w/o finetuning columns",
+        "comparison_target": "Development Exact Match when evaluating with 100 passages"
+      }
+    },
+    {
+      "id": "fid-r05",
+      "summary": "For models initially trained with 5 passages, additional 100-passage fine-tuning changes Natural Questions Exact Match from 37.8 to 45.0 and TriviaQA from 58.1 to 64.2.",
+      "section": "4 Experiments - Impact of the number of training passages",
+      "pdf_page": 5,
+      "evidence_type": "result",
+      "status": "verified",
+      "locator": {
+        "kind": "table",
+        "label": "Table 2",
+        "selection": "Training Passages row 5; w/o finetuning and w/ finetuning columns for both datasets",
+        "comparison_target": "Development Exact Match before and after 100-passage fine-tuning"
+      }
+    },
+    {
+      "id": "fid-c10",
+      "summary": "The retriever is not trained jointly with FiD in this work; integrating retrieval and learning the complete system end-to-end are listed as future work.",
+      "section": "5 Conclusion",
+      "pdf_page": 5,
+      "evidence_type": "limitation",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c11",
+      "summary": "The empirical scope is open-domain question answering on Natural Questions, TriviaQA, and SQuAD Open rather than general-purpose generation tasks.",
+      "section": "4 Experiments - Datasets",
+      "pdf_page": 4,
+      "evidence_type": "scope",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c12",
+      "summary": "The experiments retrieve fixed-length, non-overlapping Wikipedia passages, making the passage the unit processed independently by the encoder.",
+      "section": "4 Experiments - Datasets",
+      "pdf_page": 4,
+      "evidence_type": "experimental_setup",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c13",
+      "summary": "The authors interpret the improvement with more retrieved passages as evidence that seq2seq models can combine information from multiple passages.",
+      "section": "4 Experiments - Scaling with number of passages",
+      "pdf_page": 5,
+      "evidence_type": "author_interpretation",
+      "status": "verified"
+    },
+    {
+      "id": "fid-c14",
+      "summary": "The conclusion identifies efficiency at large passage counts as an open problem alongside joint retriever integration.",
+      "section": "5 Conclusion",
+      "pdf_page": 5,
+      "evidence_type": "limitation",
+      "status": "verified"
+    }
+  ]
+}
+

@@ -34,7 +34,7 @@ papers:
     local_pdf: raw/pdfs/fid.pdf
     downloaded_at: 2026-11-23
     sha256: f1ee7e927c3fb31beb2146f8c205692a91b40dadd65d80e025c6686e4d430953
-    ingest_status: proposed
+    ingest_status: verified
 
   - id: self-rag
     short_name: Self-RAG

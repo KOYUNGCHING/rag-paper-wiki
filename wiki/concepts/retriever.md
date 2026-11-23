@@ -4,6 +4,7 @@ status: verified
 verified_sources:
   - dpr
   - rag
+  - fid
 ---
 
 # 檢索器（Retriever）
@@ -35,6 +36,11 @@ seq2seq generator。[RAG:rag-c06] [RAG:rag-c10]
 原始 RAG 的 task fine-tuning 會更新 query encoder，但保持 document encoder 與 index
 固定。[RAG:rag-c08] 因此「retriever 會訓練」必須進一步說明哪一部分會更新。
 
-目前來源：[DPR paper note](../papers/dpr.md)、[RAG paper note](../papers/rag.md)。FiD、
-Self-RAG 與 RAGChecker ingest 後會補上多文件整合、何時檢索及細粒度評估。
+FiD 則把 retriever 視為外部模組，依 dataset 使用 DPR 或 BM25，沒有用 answer loss
+joint-train retriever。[FID:fid-c06] [FID:fid-c08] 這讓 FiD 可專注 multi-passage reader，
+也代表 retrieval error 不會在同一訓練流程中被自動修正。
+
+目前來源：[DPR paper note](../papers/dpr.md)、[RAG paper note](../papers/rag.md)、
+[FiD paper note](../papers/fid.md)。Self-RAG 與 RAGChecker ingest 後會補上何時檢索
+及細粒度評估。
 
