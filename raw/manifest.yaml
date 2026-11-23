@@ -29,12 +29,12 @@ papers:
     title: Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering
     arxiv_id: "2007.01282"
     landing_page: https://arxiv.org/abs/2007.01282
-    pdf_url: https://arxiv.org/pdf/2007.01282
-    version: null
+    pdf_url: https://arxiv.org/pdf/2007.01282v2
+    version: v2
     local_pdf: raw/pdfs/fid.pdf
-    downloaded_at: null
-    sha256: null
-    ingest_status: not_started
+    downloaded_at: 2026-11-23
+    sha256: f1ee7e927c3fb31beb2146f8c205692a91b40dadd65d80e025c6686e4d430953
+    ingest_status: proposed
 
   - id: self-rag
     short_name: Self-RAG
