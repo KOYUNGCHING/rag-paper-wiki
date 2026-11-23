@@ -2,7 +2,6 @@
 concept_id: rag
 status: verified
 verified_sources:
-  - dpr
   - rag
   - self-rag
   - ragchecker
@@ -37,10 +36,10 @@ critique loop。[SELF-RAG:self-rag-c05]
 「廣義 RAG 包含多種 retrieval-generation architectures」是跨論文整理，標記為
 `wiki_synthesis`；不能把原始 RAG 的 method details 套用到所有後續系統。
 
-相關頁面：[Retriever](retriever.md)、[Generator](generator.md)、
-[Context augmentation](context-augmentation.md)。
-
 ## 如何評估 RAG
 
 RAGChecker 把一次 RAG 錯誤拆成 retrieval error 或 generator error，並用 claim-level
 指標分別診斷。[RAGCHECKER:ragchecker-c05] 見 [RAG error attribution](rag-error-attribution.md)。
+
+相關頁面：[Retriever](retriever.md)、[Generator](generator.md)、
+[Context augmentation](context-augmentation.md)。

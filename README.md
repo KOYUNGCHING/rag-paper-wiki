@@ -52,5 +52,7 @@ docs/         GitHub Pages 的原生 HTML/CSS/JS 簡報
 
 已完成 DPR、原始 RAG、FiD、Self-RAG 與 RAGChecker 五篇的逐篇 proposal、人工核准、
 正式 ingest 與 evidence validation。目前有 5 篇 verified papers、125 個 verified claims、
-24 個概念頁與四份跨論文比較。下一步是 Wiki reconciliation 與 reflection；HTML 簡報尚未開始。
+24 個概念頁與四份跨論文比較。Wiki reconciliation 與
+[reflection](logs/reflection.md) 已完成，[workflow](graph/workflow.md) 已依實際 runs 更新。
+下一步是 `slides-src/` 教學大綱；HTML 簡報尚未開始。
 

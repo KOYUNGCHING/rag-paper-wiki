@@ -29,11 +29,11 @@ claims；較保守的回答則可能犧牲內容與流暢度。
 
 最後一句是基於該實驗的 `wiki_synthesis`，不是所有 task 的普遍定律。
 
-相關頁面：[Reflection tokens](reflection-tokens.md)、
-[Critique-guided decoding](critique-guided-decoding.md)、[Generator](generator.md)。
-
 ## 與 RAGChecker faithfulness 的關係
 
 RAGChecker 的 faithfulness 檢查 response claims 是否被 retrieved chunks 支持，但它不評估
 citation 標記本身。[RAGCHECKER:ragchecker-c11] 兩者都關心 evidence support，衡量對象不同
 （`wiki_synthesis`）。見 [Generation diagnostics](generation-diagnostics.md)。
+
+相關頁面：[Reflection tokens](reflection-tokens.md)、
+[Critique-guided decoding](critique-guided-decoding.md)、[Generator](generator.md)。

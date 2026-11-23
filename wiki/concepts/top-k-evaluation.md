@@ -42,11 +42,11 @@ FiD 在三個 validation curves 的顯示範圍內，隨 retrieved passages 增�
 Match。[FID:fid-r03] 這和原始 RAG 的 variant-dependent response 不同，顯示 k 的
 效果取決於 fusion architecture、task 與運算預算。
 
-相關頁面：[Retriever](retriever.md)、[DPR paper note](../papers/dpr.md)。
-
 ## RAGChecker：k 對生成端的影響
 
 RAGChecker 的 Appendix F 觀察到，增加 k 會提高 claim recall 但降低 context precision，
 同時 relevant noise sensitivity 上升（author observation）。[RAGCHECKER:ragchecker-c27]
 這補充了 DPR／FiD 只看 retrieval accuracy 或 Exact Match 的視角；詳見
 [Retrieval diagnostics](retrieval-diagnostics.md)。
+
+相關頁面：[Retriever](retriever.md)、[DPR paper note](../papers/dpr.md)。

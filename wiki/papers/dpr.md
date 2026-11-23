@@ -113,8 +113,9 @@ DPR 支援 RAG 教學中的 retrieval 半邊：
 - [Chunk 與 retrieval unit](../concepts/chunk.md)
 - [Top-k retrieval evaluation](../concepts/top-k-evaluation.md)
 
-Generator、retriever-generator 聯合建模與生成式任務要等 RAG 論文 ingest 後再補入，
-避免把後來的概念倒灌成 DPR 的原始結論。
+Generator、retriever-generator 聯合建模與生成式任務屬於後續論文，見
+[RAG paper note](rag.md) 與 [五篇總覽](../comparisons/five-paper-overview.md)；這些概念不是
+DPR 的原始結論。
 
 ## Source evidence
 
